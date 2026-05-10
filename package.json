@@ -14,6 +14,7 @@
     "seed:validate": "pnpm --filter @bottlewise/db run seed:validate",
     "seed": "pnpm --filter @bottlewise/db run seed",
     "fda": "pnpm --filter @bottlewise/db run fda",
+    "merge": "pnpm --filter @bottlewise/db run merge",
     "test": "pnpm -r run test",
     "typecheck": "pnpm -r run typecheck"
   },

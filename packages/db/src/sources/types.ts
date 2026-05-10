@@ -202,4 +202,7 @@ export interface RunOptions {
   dryRun?: boolean;
   limit?: number;
   outputDir?: string;
+  /** When true, persist results to Supabase source_records / source_runs.
+   *  Requires SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY in env. */
+  persistToDb?: boolean;
 }

@@ -76,6 +76,10 @@ Listing URLs returned 404 — most are likely path changes the brand made since 
 
 **Pattern**: the Mead Johnson / Abbott sub-brand pages all 404. The umbrella sites (enfamil.com, similac.com) likely consolidated sub-brand info into a single hub. The fix probably routes these sub-brands through the umbrella adapter with a brand-specific path filter, rather than per-sub-brand listing URLs.
 
+**Mead Johnson sub-brand consolidation applied 2026-05-09 (same commit as the merge layer):**
+- nutramigen, pregestimil, puramino, enfacare → all routed through `enfamil.com/products/` umbrella URL (which probe-validated as working) with case-insensitive sub-brand keyword filters: `a[href*='nutramigen' i]`, etc. Pending re-probe confirmation.
+- Abbott consolidation (alimentum, neosure → similac umbrella) deferred until similac.com base URL is operator-confirmed.
+
 ### Skipped — credentials needed (9)
 
 Private-label brands route to Tier D retailer adapters. Validation is gated on the corresponding env vars being set:

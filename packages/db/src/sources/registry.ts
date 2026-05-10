@@ -632,18 +632,18 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     parentCompany: "Reckitt",
     countryOfOrigin: "US",
     segments: ["specialty_hypoallergenic"],
-    website: "https://www.enfamil.com/products/nutramigen-with-enflora-lgg/",
+    website: "https://www.enfamil.com",
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
     config: {
       engine: "html",
-      productListUrl:
-        "https://www.enfamil.com/products/nutramigen-with-enflora-lgg/",
-      productLinkSelector: "a[href*='nutramigen']",
+      productListUrl: "https://www.enfamil.com/products/",
+      productLinkSelector: "a[href*='nutramigen' i]",
       selectors: { title: "h1" },
     },
     validated: false,
-    notes: "Extensively hydrolyzed casein. Cow milk protein allergy.",
+    notes:
+      "Extensively hydrolyzed casein. Cow milk protein allergy. Validation 2026-05-09: per-sub-brand URL 404s; consolidated under enfamil.com/products/ umbrella with case-insensitive nutramigen link filter.",
   },
   {
     id: "alimentum",
@@ -691,17 +691,18 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     parentCompany: "Reckitt",
     countryOfOrigin: "US",
     segments: ["specialty_hypoallergenic", "specialty_metabolic"],
-    website: "https://www.enfamil.com/products/pregestimil/",
+    website: "https://www.enfamil.com",
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
     config: {
       engine: "html",
-      productListUrl: "https://www.enfamil.com/products/pregestimil/",
-      productLinkSelector: "a[href*='pregestimil']",
+      productListUrl: "https://www.enfamil.com/products/",
+      productLinkSelector: "a[href*='pregestimil' i]",
       selectors: { title: "h1" },
     },
     validated: false,
-    notes: "Extensively hydrolyzed casein + MCT oil. Fat malabsorption.",
+    notes:
+      "Extensively hydrolyzed casein + MCT oil. Fat malabsorption. Validation 2026-05-09: per-sub-brand URL 404; consolidated under enfamil umbrella.",
   },
 
   // ---------------------------------------------------------------------
@@ -754,17 +755,18 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     parentCompany: "Reckitt",
     countryOfOrigin: "US",
     segments: ["specialty_amino_acid"],
-    website: "https://www.enfamil.com/products/puramino/",
+    website: "https://www.enfamil.com",
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
     config: {
       engine: "html",
-      productListUrl: "https://www.enfamil.com/products/puramino/",
-      productLinkSelector: "a[href*='puramino']",
+      productListUrl: "https://www.enfamil.com/products/",
+      productLinkSelector: "a[href*='puramino' i]",
       selectors: { title: "h1" },
     },
     validated: false,
-    notes: "Amino-acid + medium-chain triglycerides.",
+    notes:
+      "Amino-acid + medium-chain triglycerides. Validation 2026-05-09: consolidated under enfamil umbrella.",
   },
 
   // ---------------------------------------------------------------------
@@ -797,17 +799,18 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     parentCompany: "Reckitt",
     countryOfOrigin: "US",
     segments: ["preemie_post_discharge"],
-    website: "https://www.enfamil.com/products/enfacare/",
+    website: "https://www.enfamil.com",
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
     config: {
       engine: "html",
-      productListUrl: "https://www.enfamil.com/products/enfacare/",
-      productLinkSelector: "a[href*='enfacare']",
+      productListUrl: "https://www.enfamil.com/products/",
+      productLinkSelector: "a[href*='enfacare' i]",
       selectors: { title: "h1" },
     },
     validated: false,
-    notes: "Post-NICU discharge formula. 22 cal/oz.",
+    notes:
+      "Post-NICU discharge formula. 22 cal/oz. Validation 2026-05-09: consolidated under enfamil umbrella.",
   },
 
   // ---------------------------------------------------------------------

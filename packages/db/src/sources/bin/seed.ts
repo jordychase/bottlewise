@@ -27,6 +27,7 @@ interface ParsedArgs {
   segment?: BrandSegment;
   limit?: number;
   out?: string;
+  db?: boolean;
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
@@ -35,6 +36,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     if (arg === "--list") out.list = true;
     else if (arg === "--dry") out.dry = true;
     else if (arg === "--validate") out.validate = true;
+    else if (arg === "--db") out.db = true;
     else if (arg.startsWith("--brand=")) out.brand = arg.slice("--brand=".length);
     else if (arg.startsWith("--segment="))
       out.segment = arg.slice("--segment=".length) as BrandSegment;
@@ -118,6 +120,7 @@ async function main(): Promise<void> {
     dryRun: args.dry,
     limit: args.limit,
     outputDir: args.out,
+    persistToDb: args.db,
   };
 
   const results = await runAll(opts);

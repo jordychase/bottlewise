@@ -11,11 +11,13 @@
     "seed:validate": "tsx src/sources/bin/seed.ts --validate",
     "seed": "tsx src/sources/bin/seed.ts",
     "fda": "tsx src/sources/bin/fda.ts",
+    "merge": "tsx src/sources/bin/merge.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
     "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {

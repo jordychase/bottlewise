@@ -39,11 +39,16 @@ pnpm seed:dry
 # Validate every registry entry (1–3 probe requests per brand)
 pnpm seed:validate
 
-# Live run for one brand, persisting raw + normalized payloads
+# Live run for one brand, persisting raw + normalized payloads to disk
 pnpm --filter @bottlewise/db run seed -- --brand=bobbie --out=./staging
 
-# Live run for an entire segment
-pnpm --filter @bottlewise/db run seed -- --segment=european_import --out=./staging
+# Live run, persisting to Supabase source_records (requires SUPABASE_URL +
+# SUPABASE_SERVICE_ROLE_KEY)
+pnpm --filter @bottlewise/db run seed -- --brand=bobbie --db
+
+# Run the canonical merge: source_records → formulas + formula_ingredients
+pnpm merge -- --brand=bobbie
+pnpm merge -- --since=2026-05-01 --dry
 
 # FDA gate: submissions list + openFDA recalls
 pnpm fda --out=./staging/fda
@@ -58,6 +63,24 @@ CLI flags (`packages/db/src/sources/bin/seed.ts`):
 - `--segment=<segment>` — all brands in a segment (`mass_market`, `premium_dtc`, `european_import`, ...)
 - `--limit=<n>` — cap brand count
 - `--out=<dir>` — persist raw + normalized JSON per brand
+- `--db` — persist to Supabase `source_records` + `source_runs` (requires `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`)
+
+### Merge layer
+
+`packages/db/src/sources/merge.ts` implements the canonical-merge logic from `docs/DATA_SOURCING.md` § 4. Flow:
+
+1. `pnpm seed --db` writes adapter outputs to `source_records` + telemetry to `source_runs`.
+2. `pnpm merge` reads recent source_records, groups by `(brand_registry_id, external_id)`, walks each field through the precedence rules, and upserts canonical formulas + formula_ingredients into the public-readable knowledge base.
+3. Every conflicting field overwrite is recorded in `source_conflicts` for audit.
+
+Per-field precedence (most→least; FIELD_PRECEDENCE in `merge.ts`):
+- `pediatricIndications`: brand_dtc, manual ONLY (clinical claims must come from brand)
+- `ingredients`: brand_dtc → community → retailer
+- `proteinSource`, `proteinForm`, `fatBlend`, `carbSources`, `specialtyDesignations`: brand_dtc → community
+- `msrpUsdCents`: retailer → brand_dtc (retailer reflects actual market price)
+- Other fields: tier rank wins (authoritative > manual > brand_dtc > community > retailer), then most-recent observation as tiebreaker
+
+The pure functions (`pickByPrecedence`, `buildCanonical`, `tierOf`) are unit-tested without a database round-trip; DB-touching functions (`writeSourceRecords`, `mergeCanonical`) are exercised live once Supabase is wired in.
 
 ### Tier D retailer adapters
 

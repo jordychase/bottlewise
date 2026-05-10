@@ -10,6 +10,12 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import {
+  getSupabaseClient,
+  hasSupabaseCredentials,
+  type SupabaseClient,
+} from "../client.js";
+import { writeSourceRecords } from "./merge.js";
 import { runShopifyAdapter } from "./engines/shopify.js";
 import { runJsonLdAdapter } from "./engines/jsonld.js";
 import { runHtmlAdapter } from "./engines/html.js";
@@ -159,6 +165,7 @@ export async function runAll(opts: RunOptions = {}): Promise<AdapterResult[]> {
       const r = await runAdapter(brand);
       results.push(r);
       if (opts.outputDir) await persist(r, opts.outputDir);
+      if (opts.persistToDb) await persistToDb(r);
     } catch (err) {
       results.push({
         brandId: brand.id,
@@ -182,6 +189,23 @@ async function persist(result: AdapterResult, outputDir: string): Promise<void> 
   const path = join(outputDir, result.brandId, `${ts}.json`);
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, JSON.stringify(result, null, 2), "utf8");
+}
+
+let cachedDbClient: SupabaseClient | null = null;
+async function persistToDb(result: AdapterResult): Promise<void> {
+  if (!hasSupabaseCredentials()) {
+    result.errors.push({
+      brandId: result.brandId,
+      message: "persistToDb requested but SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set",
+      code: "NO_DB_CREDENTIALS",
+    });
+    return;
+  }
+  if (!cachedDbClient) cachedDbClient = getSupabaseClient();
+  const write = await writeSourceRecords(cachedDbClient, result);
+  for (const e of write.errors) {
+    result.errors.push({ brandId: result.brandId, message: e, code: "DB_WRITE" });
+  }
 }
 
 /**
