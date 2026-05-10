@@ -1,7 +1,9 @@
+import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 import { ScreenFrame } from "@/components/ScreenFrame";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FormulaCard, type Formula } from "@/components/FormulaCard";
+import { findFormulaById } from "@/data/formula-catalog";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
 
 const FORMULAS: Formula[] = [
@@ -46,10 +48,18 @@ const FORMULAS: Formula[] = [
 ];
 
 export default function RecommendationsScreen() {
+  const { currentFormula } = useLocalSearchParams<{ currentFormula?: string }>();
+  const current = currentFormula ? findFormulaById(currentFormula) : undefined;
+
+  const eyebrow = current ? `Alternatives to ${current.brandName}` : "Three picks for Maya";
+  const headline = current
+    ? `Closest matches if ${current.brandName} isn't working for Maya.`
+    : "Based on what you told us — gentle introduction, family eczema, no soy concern.";
+
   return (
     <ScreenFrame disclaimer>
       <View style={{ paddingTop: spacing.s5, gap: spacing.s1 }}>
-        <Eyebrow tone="sage">Three picks for Maya</Eyebrow>
+        <Eyebrow tone="sage">{eyebrow}</Eyebrow>
         <Text
           style={{
             fontFamily: fonts.display,
@@ -60,8 +70,29 @@ export default function RecommendationsScreen() {
             marginTop: spacing.s1,
           }}
         >
-          Based on what you told us — gentle introduction, family eczema, no soy concern.
+          {headline}
         </Text>
+        {current && (
+          <View
+            style={{
+              backgroundColor: colors.sageSoft,
+              borderRadius: 12,
+              padding: spacing.s4,
+              marginTop: spacing.s3,
+              gap: 4,
+            }}
+          >
+            <Text style={{ fontFamily: fonts.bodyBold, fontSize: 10, color: colors.sageInk, letterSpacing: 1, textTransform: "uppercase" }}>
+              Your current formula
+            </Text>
+            <Text style={{ fontFamily: fonts.bodySemi, fontSize: 15, color: colors.ink }}>
+              {current.fullName}
+            </Text>
+            <Text style={{ fontFamily: fonts.body, fontSize: 13, color: colors.ink2, lineHeight: 19 }}>
+              {current.tagline}
+            </Text>
+          </View>
+        )}
       </View>
 
       <FormulaCard formula={FORMULAS[0]} eyebrow="Best match" />

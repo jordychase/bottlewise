@@ -47,7 +47,7 @@ export default function WelcomeScreen() {
         <RadioCard
           title="On formula, need help"
           hint="Stock issue, tolerance issue, or trying to find something gentler."
-          onPress={() => router.push("/intake")}
+          onPress={() => router.push("/troubleshoot")}
         />
       </View>
 
