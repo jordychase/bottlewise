@@ -35,3 +35,9 @@ out/
 staging/
 
 # Mobile app uses npm (pnpm used elsewhere); lock file is committed for CI.
+
+# Signup copilot operator profile — never commit
+.bottlewise-signup.local.json
+
+# Walmart keypair output dir — generated locally, archived to secrets vault
+walmart-keys/

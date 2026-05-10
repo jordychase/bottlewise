@@ -15,10 +15,13 @@
     "seed": "pnpm --filter @bottlewise/db run seed",
     "fda": "pnpm --filter @bottlewise/db run fda",
     "merge": "pnpm --filter @bottlewise/db run merge",
+    "signup": "tsx scripts/signup-copilot.ts",
     "test": "pnpm -r run test",
     "typecheck": "pnpm -r run typecheck"
   },
   "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.4.0"
   }
 }
