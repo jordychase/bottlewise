@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "Bottlewise",
+    "slug": "bottlewise",
+    "scheme": "bottlewise",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F6F1E8",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ai.bottlewise.app"
+    },
+    "android": {
+      "package": "ai.bottlewise.app",
+      "adaptiveIcon": { "backgroundColor": "#F6F1E8" }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "Bottlewise",
+      "themeColor": "#6B8E7F",
+      "backgroundColor": "#F6F1E8"
+    },
+    "plugins": ["expo-router", "expo-font"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

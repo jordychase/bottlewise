@@ -1,9 +1,11 @@
 packages:
   - "packages/*"
-  - "apps/*"
+  # apps/* are intentionally excluded from the pnpm workspace.
+  # Expo + Metro fights pnpm's nested node_modules; the mobile app uses npm
+  # in its own subdir. Workspace-linking to packages/* will be re-added once
+  # we move to a Metro config that fully resolves pnpm symlinks.
 
 allowBuilds:
   esbuild: set this to true or false
-
 onlyBuiltDependencies:
   - esbuild
