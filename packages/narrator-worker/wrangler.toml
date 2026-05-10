@@ -1,0 +1,21 @@
+name = "bottlewise-narrator"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Anthropic API key lives in Cloudflare secrets, NEVER in the repo.
+# Set with: wrangler secret put ANTHROPIC_API_KEY
+
+[vars]
+# Model can be changed without a code deploy; defaults to Haiku for cost/latency.
+ANTHROPIC_MODEL = "claude-haiku-4-5-20251001"
+# Maximum tokens — narration is intentionally short.
+ANTHROPIC_MAX_TOKENS = "320"
+# Comma-separated origins allowed via CORS. Add localhost during dev.
+ALLOWED_ORIGINS = "https://jordychase.github.io,http://localhost:8081"
+
+# Rate limit: 60 requests per minute per IP. Cloudflare's built-in.
+# Configure via the dashboard or via the `unsafe.bindings` field if needed.
+
+# Observability — leave on for the first weeks of operation.
+[observability]
+enabled = true

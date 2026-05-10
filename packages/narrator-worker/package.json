@@ -1,0 +1,20 @@
+{
+  "name": "@bottlewise/narrator-worker",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Cloudflare Worker that calls Claude for personalized ingredient-review narration. Holds the Anthropic API key server-side so it never enters the mobile bundle.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0",
+    "wrangler": "^3.78.0"
+  }
+}

@@ -1,9 +1,14 @@
 packages:
   - "packages/*"
+  - "!packages/narrator-worker"
   # apps/* are intentionally excluded from the pnpm workspace.
   # Expo + Metro fights pnpm's nested node_modules; the mobile app uses npm
   # in its own subdir. Workspace-linking to packages/* will be re-added once
   # we move to a Metro config that fully resolves pnpm symlinks.
+  #
+  # narrator-worker is also npm-installed in its own subdir — it ships as a
+  # Cloudflare Worker via `wrangler deploy`, and Cloudflare's tooling expects
+  # a flat node_modules.
 
 allowBuilds:
   esbuild: set this to true or false
