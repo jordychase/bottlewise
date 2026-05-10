@@ -292,16 +292,18 @@ See § 9 Open Decisions item 1.
 
 ## 10. Implementation order
 
-Suggested sequencing for the seed KB build, top-down dependencies. ✅ = shipped, 🟡 = scaffolded but needs validation/credentials.
+Suggested sequencing for the seed KB build, top-down dependencies. ✅ = shipped, 🟡 = scaffolded pending credentials/operator action.
 
 1. ✅ Brand registry + three generic engines (`shopify`, `jsonld`, `html`) + polite HTTP client + runner CLI. See `packages/db/`.
 2. ✅ `fda-submissions` adapter — the gate. Without this no formula is allowed to surface to users regardless of how rich its DTC scrape is. (`packages/db/src/sources/adapters/fda-submissions.ts`, `pnpm fda --submissions-only`)
 3. ✅ `openfda-recalls` adapter — safety-critical, runs against gated formulas every 15 min. (`packages/db/src/sources/adapters/openfda-recalls.ts`, `pnpm fda --recalls-only`)
-4. 🟡 Tier D retailer adapters: `amazon-pa-api` (SigV4-signed), `walmart` (RSA-signed Affiliate API), `target-redsky` (public visitor key). All three implemented; activate by setting their respective env vars. Until then, the runner returns `NO_CREDENTIALS` errors for private-label brands.
-5. 🟡 Validation tooling — `pnpm seed:validate` probes each registry entry's engine + config with one to three live requests, returns pass/fail + hints. Operator runs this to flip `validated: true` per brand.
-6. `source_records` + `source_runs` + merge job scaffold once Supabase is wired in (no DB writes yet — runner persists JSON to `staging/` instead).
-7. `openfoodfacts-bulk` — broad fill for ingredient/nutrition gaps.
-8. `usda-fdc` — additional nutrition fill.
-9. `usitc-hts` + manual tariff overlay loader.
-10. Crowdsource UI + reputation system (PRD § Stock signals).
-11. DTC partnership API integrations replacing scraper adapters as engagements sign.
+4. ✅ Validation tooling + first sweep. `pnpm seed:validate` probes each registry entry. First sweep results in `docs/VALIDATION_LOG.md` (12 pass, 26 fail, 9 skipped on credentials). Engine-swap fixes applied to byheart, earthly-origins, nannycare, a2-platinum, neocate. gerber-good-start + gerber-extensive-ha moved to `partnership_only`.
+5. ✅ Supabase schema migrations (`/supabase/migrations/`) — full DATA_MODEL.md spec plus the source-layer additions from § 8 (source_records, source_runs, source_conflicts, formula_recalls). RLS policies, recall denormalization trigger, public_trial_outcomes view all included.
+6. 🟡 Tier D retailer adapters: `amazon-pa-api` (SigV4-signed), `walmart` (RSA-signed Affiliate API), `target-redsky` (public visitor key). All three implemented; activate by setting `AMAZON_PA_*` / `WALMART_*` env vars. Target works without auth.
+7. 🟡 Operator URL fixes for the 19 stale-URL brands flagged in `docs/VALIDATION_LOG.md`.
+8. Merge layer: replace `staging/` JSON output with `source_records` upserts + canonical-merge job that writes `formulas` + `formula_ingredients` per the precedence rules in § 4.
+9. `openfoodfacts-bulk` — broad fill for ingredient/nutrition gaps.
+10. `usda-fdc` — additional nutrition fill.
+11. `usitc-hts` + manual tariff overlay loader.
+12. Crowdsource UI + reputation system (PRD § Stock signals).
+13. DTC partnership API integrations replacing scraper adapters as engagements sign.

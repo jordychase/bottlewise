@@ -20,6 +20,8 @@ For any change touching the schema, `docs/DATA_MODEL.md` is mandatory pre-readin
 
 For any change touching adapters, scrapers, scheduled data jobs, or the seed knowledge base, `docs/DATA_SOURCING.md` is mandatory pre-reading.
 
+For any change to the registry that flips `validated: true` or alters an engine choice, append a record to `docs/VALIDATION_LOG.md` with the probe evidence behind the change.
+
 ---
 
 ## Project-specific overrides

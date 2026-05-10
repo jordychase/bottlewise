@@ -81,7 +81,7 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     segments: ["mass_market"],
     website: "https://www.gerber.com",
     fdaStatusDefault: "registered",
-    scrapeStatus: "auto",
+    scrapeStatus: "partnership_only",
     config: {
       engine: "html",
       productListUrl: "https://www.gerber.com/baby-formula",
@@ -89,7 +89,8 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
       selectors: { title: "h1" },
     },
     validated: false,
-    notes: "Lines: GentlePro, Soothe Pro, Soy, Extensive HA, Plus.",
+    notes:
+      "Lines: GentlePro, Soothe Pro, Soy, Extensive HA, Plus. Validation 2026-05-09: gerber.com returns 403 to bot UAs (anti-bot). Marked partnership_only — data will come via Nestlé partnership feed once engaged.",
   },
   {
     id: "earths-best-organic",
@@ -309,12 +310,14 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
     config: {
-      engine: "jsonld",
+      engine: "html",
       productListUrl: "https://www.byheart.com/products",
+      productLinkSelector: "a[href*='/products/']",
+      selectors: { title: "h1" },
     },
     validated: false,
     notes:
-      "Whole milk + lactoferrin. Modern site likely with JSON-LD; partnership candidate per PRD.",
+      "Whole milk + lactoferrin. Validation 2026-05-09: site has no JSON-LD; switched from jsonld to html engine. Selectors need a real validation pass. Partnership candidate per PRD.",
   },
   {
     id: "serenity-kids",
@@ -353,8 +356,15 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     website: "https://www.earthlyorigins.com",
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
-    config: { engine: "shopify", domain: "www.earthlyorigins.com" },
+    config: {
+      engine: "html",
+      productListUrl: "https://www.earthlyorigins.com/shop",
+      productLinkSelector: "a[href*='/products/'], a[href*='/shop/']",
+      selectors: { title: "h1" },
+    },
     validated: false,
+    notes:
+      "Validation 2026-05-09: domain serves HTML, not Shopify products.json. Switched to html engine. Listing URL guessed at /shop; needs validation.",
   },
   {
     id: "happy-baby-organic",
@@ -602,11 +612,14 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     fdaStatusDefault: "enforcement_discretion",
     scrapeStatus: "auto",
     config: {
-      engine: "jsonld",
+      engine: "html",
       productListUrl: "https://www.nannycare.co.uk/products",
+      productLinkSelector: "a[href*='/products/']",
+      selectors: { title: "h1" },
     },
     validated: false,
-    notes: "UK goat-milk specialist. Stage 1/2/3.",
+    notes:
+      "UK goat-milk specialist. Stage 1/2/3. Validation 2026-05-09: page has JSON-LD scripts but none typed Product; switched to html engine.",
   },
 
   // ---------------------------------------------------------------------
@@ -660,7 +673,7 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     segments: ["specialty_hypoallergenic"],
     website: "https://www.gerber.com/products/extensive-ha",
     fdaStatusDefault: "registered",
-    scrapeStatus: "auto",
+    scrapeStatus: "partnership_only",
     config: {
       engine: "html",
       productListUrl: "https://www.gerber.com/products/extensive-ha",
@@ -668,7 +681,8 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
       selectors: { title: "h1" },
     },
     validated: false,
-    notes: "100% extensively hydrolyzed whey.",
+    notes:
+      "100% extensively hydrolyzed whey. Validation 2026-05-09: gerber.com 403s; partnership_only until Nestlé feed lands.",
   },
   {
     id: "pregestimil",
@@ -724,12 +738,14 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     fdaStatusDefault: "registered",
     scrapeStatus: "auto",
     config: {
-      engine: "jsonld",
+      engine: "html",
       productListUrl: "https://www.neocate.com/products/",
+      productLinkSelector: "a[href*='/products/']",
+      selectors: { title: "h1" },
     },
     validated: false,
     notes:
-      "Syneo Infant, Junior, Splash. Amino-acid based; severe allergy / GI conditions.",
+      "Syneo Infant, Junior, Splash. Amino-acid based; severe allergy / GI conditions. Validation 2026-05-09: no JSON-LD on listing page; switched to html.",
   },
   {
     id: "puramino",
@@ -857,12 +873,14 @@ export const BRAND_REGISTRY: BrandRegistryEntry[] = [
     fdaStatusDefault: "enforcement_discretion",
     scrapeStatus: "auto",
     config: {
-      engine: "jsonld",
+      engine: "html",
       productListUrl: "https://www.a2platinum.com/products",
+      productLinkSelector: "a[href*='/product/'], a[href*='/products/']",
+      selectors: { title: "h1" },
     },
     validated: false,
     notes:
-      "A2-only β-casein protein. Stage 1, 2, 3. AU/NZ-recipe; US enforcement-discretion.",
+      "A2-only β-casein protein. Stage 1/2/3. AU/NZ-recipe; US enforcement-discretion. Validation 2026-05-09: JSON-LD present but not Product type; switched to html.",
   },
 ];
 

@@ -103,7 +103,10 @@ This product operates as **information & decision-support only** (Positioning Ti
 2. `docs/DATA_MODEL.md` — database schema
 3. `docs/AI_DESIGN.md` — AI architecture and prompt design
 4. `docs/DATA_SOURCING.md` — where the formula knowledge base actually comes from
-5. `CLAUDE.md` — operating instructions for Claude Code
+5. `docs/VALIDATION_LOG.md` — append-only record of registry validation passes
+6. `supabase/README.md` — schema migration layout + apply instructions
+7. `packages/db/README.md` — adapter framework + CLI reference
+8. `CLAUDE.md` — operating instructions for Claude Code
 
 ## Status
 
