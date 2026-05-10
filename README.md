@@ -62,11 +62,28 @@ Read this before scoping.
 └── README.md
 ```
 
-## Quick start (target state)
+## Quick start
 
 ```bash
 pnpm install
-cp .env.example .env  # fill in Supabase, Anthropic, Amazon PA-API, Walmart keys
+
+# Inspect the brand registry (~47 brands across every segment)
+pnpm seed:list
+
+# Dispatch every adapter without fetching (sanity check)
+pnpm seed:dry
+
+# Run a single brand and persist raw + normalized JSON
+pnpm --filter @bottlewise/db run seed -- --brand=bobbie --out=./staging
+
+# Test suite
+pnpm test
+```
+
+Target state for the full app (Supabase + Expo) once Open Decisions resolve:
+
+```bash
+cp .env.example .env  # Supabase, Anthropic, Amazon PA-API, Walmart keys
 pnpm db:migrate
 pnpm db:seed
 pnpm dev

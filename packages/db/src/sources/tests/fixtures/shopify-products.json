@@ -1,0 +1,62 @@
+{
+  "products": [
+    {
+      "id": 1234567890,
+      "title": "Bobbie Organic Infant Formula - 14.1 oz",
+      "handle": "bobbie-organic-infant-formula",
+      "body_html": "<p>USDA Organic infant formula modeled after breast milk and the EU recipe standard.</p><p><strong>Ingredients:</strong> Organic Reduced Minerals Whey, Organic Lactose, Organic Vegetable Oils (Organic Sunflower Oil, Organic Soy Oil, Organic Coconut Oil), Organic Nonfat Milk, Organic Galactooligosaccharides, less than 2% of: Calcium Carbonate, Magnesium Phosphate, Choline Bitartrate, Potassium Citrate, Sodium Selenate.</p>",
+      "vendor": "Bobbie",
+      "product_type": "Infant Formula",
+      "tags": ["organic", "infant-formula", "stage-1", "0-12-months"],
+      "variants": [
+        {
+          "id": 111,
+          "title": "Single Can",
+          "price": "26.00",
+          "sku": "BOB-ORG-14oz-1",
+          "grams": 400
+        },
+        {
+          "id": 112,
+          "title": "Subscribe & Save",
+          "price": "23.00",
+          "sku": "BOB-ORG-14oz-1-SUB",
+          "grams": 400
+        }
+      ],
+      "images": [{ "src": "https://example.com/bobbie.jpg" }]
+    },
+    {
+      "id": 1234567891,
+      "title": "Bobbie Branded Onesie",
+      "handle": "bobbie-onesie",
+      "body_html": "<p>100% cotton onesie.</p>",
+      "vendor": "Bobbie",
+      "product_type": "Apparel",
+      "tags": ["merch", "apparel"],
+      "variants": [
+        { "id": 211, "title": "Default", "price": "24.00", "sku": "BOB-ONE-1" }
+      ],
+      "images": []
+    },
+    {
+      "id": 1234567892,
+      "title": "Bobbie Plus Toddler Formula - 14.1 oz",
+      "handle": "bobbie-plus-toddler",
+      "body_html": "<p>Toddler formula for 12+ months. Organic, non-GMO.</p><p>Ingredients: Organic Whole Milk, Organic Lactose, DHA, ARA.</p>",
+      "vendor": "Bobbie",
+      "product_type": "Toddler Formula",
+      "tags": ["organic", "toddler-formula", "12-plus-months"],
+      "variants": [
+        {
+          "id": 311,
+          "title": "Single Can",
+          "price": "28.00",
+          "sku": "BOB-PLUS-14oz",
+          "grams": 400
+        }
+      ],
+      "images": []
+    }
+  ]
+}

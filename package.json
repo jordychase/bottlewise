@@ -1,0 +1,21 @@
+{
+  "name": "bottlewise",
+  "version": "0.0.1",
+  "private": true,
+  "description": "AI Formula Helper for parents of formula-fed babies",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "seed:list": "pnpm --filter @bottlewise/db run seed:list",
+    "seed:dry": "pnpm --filter @bottlewise/db run seed:dry",
+    "seed": "pnpm --filter @bottlewise/db run seed",
+    "test": "pnpm -r run test",
+    "typecheck": "pnpm -r run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

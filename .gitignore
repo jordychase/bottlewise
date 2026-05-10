@@ -30,3 +30,6 @@ out/
 
 # Supabase
 .supabase/
+
+# Adapter staging output
+staging/

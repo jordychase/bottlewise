@@ -50,13 +50,36 @@ The brief specifies sources for **stock** (Amazon PA-API, Walmart, crowdsource, 
 
 ### Tier C — Brand DTC (the meat of the seed KB)
 
-Per-brand polite scrapers against the brand's product detail pages. Initial allowlist (US-relevant + European-import brands the audience cares about):
+The brand registry must reflect every infant formula a US family might encounter, across every budget and life circumstance. Premium DTC alone leaves out the WIC parent buying Parent's Choice, the immigrant family buying Dutch HiPP through a specialty importer, the NICU graduate on NeoSure, the EoE infant on EleCare. Comprehensive coverage is non-negotiable.
 
-**US:** Bobbie, ByHeart, Enfamil (Mead Johnson), Similac (Abbott), Gerber, Earth's Best, Happy Baby (Nurture), Parent's Choice (Walmart private label), Serenity Kids, Earthly Origins.
+**~47 brands shipped in `packages/db/src/sources/registry.ts`**, grouped by segment:
 
-**European import:** Kendamil, HiPP (DE/UK/NL variants), Holle, Lebenswert, Loulouka, Aussie Bubs.
+| Segment | Brands |
+|---|---|
+| Mass-market US | Enfamil, Similac, Gerber Good Start, Earth's Best Organic |
+| Private label / WIC-budget | Parent's Choice (Walmart), Up & Up (Target), Comforts (Kroger), Member's Mark (Sam's), Kirkland Signature (Costco), Mama Bear (Amazon), Berkley Jensen (BJ's), Tippy Toes (Aldi), CVS Health, HEB Baby |
+| Premium US DTC | Bobbie, ByHeart, Serenity Kids, Else Nutrition, Earthly Origins, Happy Baby Organic, Munchkin Grass Fed, Burt's Bees Baby Organic |
+| European import | HiPP (DE / UK / NL / US-importer), Holle, Lebenswert, Loulouka, Kendamil, Aussie Bubs, Bubs Australia, Töpfer Lactana, Nannycare, Holle Goat, Kendamil Goat, a2 Platinum |
+| Hypoallergenic (extensively hydrolyzed) | Nutramigen, Similac Alimentum, Gerber Extensive HA, Pregestimil |
+| Amino-acid elemental | EleCare, Neocate, PurAmino |
+| Preemie post-discharge | Similac NeoSure, Enfamil EnfaCare |
+| Goat milk specialist | Kabrita |
+| A2 milk | a2 Platinum (cross-segment) |
+| Plant-based | Else Nutrition (cross-segment) |
 
-**Per-brand scraper config** lives in `packages/db/src/sources/brand-{slug}/config.ts` with selectors, product list URL, and ingredient-panel selector. New brand = new config + adapter test fixture (HTML snapshot committed to repo so parser changes are reviewable).
+**Engine assignment.** Each registry entry routes to one of three DTC engines or one of two non-DTC dispatchers:
+
+| Engine | Count | When it works | Coverage |
+|---|---|---|---|
+| `shopify` | ~11 | Storefront exposes `/products.json` | Most modern DTC (Bobbie, Serenity Kids, Else, Earthly Origins, Kabrita, Aussie Bubs, ...) |
+| `jsonld` | ~12 | Site embeds schema.org Product markup | Many corporate sites; some modern DTC |
+| `html` | ~14 | Per-brand selectors required | Legacy big-brand sites (Enfamil, Similac, regional HiPP, specialty Abbott / Mead Johnson sub-brands) |
+| `retailer_api` | ~10 | Brand has no DTC site | Private-label brands sourced via Amazon PA-API / Walmart / Target |
+| `manual_only` | 0 | NICU / prescription with no public surface | Reserved for hospital-only formulas |
+
+**Validation discipline.** Every registry entry ships with `validated: false`. That flag means "engine + config are an informed guess; an operator must run a smoke test before relying on the data." A real validation pass: run `pnpm seed --brand=<id> --out=./staging`, inspect the JSON, fix selectors or swap the engine if the catalog looks wrong, flip the flag.
+
+**Adding a brand** = appending to `BRAND_REGISTRY` in `registry.ts`. Most additions are 10 lines of config; only legacy custom-CMS sites need bespoke selectors.
 
 ### Tier D — Retailer (price + stock, NOT composition)
 
@@ -269,16 +292,16 @@ See § 9 Open Decisions item 1.
 
 ## 10. Implementation order
 
-Suggested sequencing for the seed KB build, top-down dependencies:
+Suggested sequencing for the seed KB build, top-down dependencies. ✅ = shipped.
 
-1. `source_records` + `source_runs` + merge job scaffold (no adapters yet, just the plumbing).
-2. `fda-submissions` adapter — the gate. Without this nothing else is allowed to surface.
-3. `openfda-recalls` adapter — safety-critical, runs against gated formulas.
-4. Two brand DTC adapters as proof-of-pattern: `brand:bobbie` (modern site, partnership candidate) and `brand:enfamil` (legacy site, more selectors).
-5. `openfoodfacts-bulk` — first broad fill.
-6. `usda-fdc` — nutrition fill.
-7. Remaining brand DTC adapters in priority order by US market share.
+1. ✅ Brand registry + three generic engines (`shopify`, `jsonld`, `html`) + polite HTTP client + runner CLI. See `packages/db/`.
+2. `source_records` + `source_runs` + merge job scaffold once Supabase is wired in (no DB writes yet — runner persists JSON to `staging/` instead).
+3. Validation pass: smoke-test each registry entry, fix selectors / engine choices, flip `validated: true` per brand.
+4. `fda-submissions` adapter — the gate. Without this no formula is allowed to surface to users regardless of how rich its DTC scrape is.
+5. `openfda-recalls` adapter — safety-critical, runs against gated formulas every 15 min.
+6. `openfoodfacts-bulk` — broad fill for ingredient/nutrition gaps.
+7. `usda-fdc` — additional nutrition fill.
 8. `usitc-hts` + manual tariff overlay loader.
-9. `amazon-pa-api`, `walmart`, `target-redsky` — only after composition data is sufficient to recommend against.
+9. Tier D retailer adapters: `amazon-pa-api`, `walmart`, `target-redsky`. Activates the private-label brands (Parent's Choice, Up & Up, Kirkland, etc.) currently parked behind `retailer_api` stubs.
 10. Crowdsource UI + reputation system (PRD § Stock signals).
-11. DTC partnership integrations (Bobbie, ByHeart) — replaces their scraper adapters.
+11. DTC partnership integrations (Bobbie, ByHeart, Kabrita) — replaces their scraper adapters with first-party APIs once partnerships sign.
