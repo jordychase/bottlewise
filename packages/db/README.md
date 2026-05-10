@@ -94,6 +94,8 @@ Private-label brands (Parent's Choice, Up & Up, Comforts, Kirkland, Mama Bear, B
 
 Without credentials, the runner returns `NO_CREDENTIALS` errors for the affected brands and skips. Target works without explicit credentials but the visitor key may need periodic rotation.
 
+**Setup:** see [docs/CREDENTIALS_SETUP.md](../../docs/CREDENTIALS_SETUP.md) for step-by-step signup instructions per vendor. Run `pnpm creds:check` at any time to see which adapters are wired and which aren't. The Walmart keypair generator is at `scripts/gen-walmart-key.sh`.
+
 ### FDA gate adapter
 
 `packages/db/src/sources/adapters/fda-submissions.ts` parses the FDA Infant Formula Submissions HTML page into structured records. The gate principle (DATA_SOURCING.md § 1) means a formula doesn't surface to users unless its brand + product appear in this list (or a curator overlay marks it `enforcement_discretion`).
