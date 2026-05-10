@@ -34,5 +34,4 @@ out/
 # Adapter staging output
 staging/
 
-# Mobile app package-lock (npm-installed; pnpm used elsewhere)
-apps/mobile/package-lock.json
+# Mobile app uses npm (pnpm used elsewhere); lock file is committed for CI.
