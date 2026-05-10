@@ -52,9 +52,10 @@ Read this before scoping.
 ├── docs/
 │   ├── PRD.md                 # Full product spec (start here)
 │   ├── DATA_MODEL.md          # Schema reference
-│   └── AI_DESIGN.md           # AI architecture, prompts, similarity model
+│   ├── AI_DESIGN.md           # AI architecture, prompts, similarity model
+│   └── DATA_SOURCING.md       # Where formula data comes from; adapters, scrapers, merge rules
 ├── scripts/
-│   ├── seed-formulas.ts       # Seed knowledge base
+│   ├── seed-formulas.ts       # Seed knowledge base (orchestrates Tier A–C adapters)
 │   ├── refresh-tariffs.ts     # Pull latest HTS data
 │   └── stock-poll.ts          # Affiliate API stock polling job
 ├── CLAUDE.md                  # Project-specific Claude Code instructions
@@ -84,7 +85,8 @@ This product operates as **information & decision-support only** (Positioning Ti
 1. `docs/PRD.md` — full product specification
 2. `docs/DATA_MODEL.md` — database schema
 3. `docs/AI_DESIGN.md` — AI architecture and prompt design
-4. `CLAUDE.md` — operating instructions for Claude Code
+4. `docs/DATA_SOURCING.md` — where the formula knowledge base actually comes from
+5. `CLAUDE.md` — operating instructions for Claude Code
 
 ## Status
 

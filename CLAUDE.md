@@ -12,10 +12,13 @@ Read in this order before any non-trivial change:
 2. `docs/PRD.md` — product specification, scope, compliance framework
 3. `docs/DATA_MODEL.md` — schema reference
 4. `docs/AI_DESIGN.md` — AI architecture and prompts
+5. `docs/DATA_SOURCING.md` — formula KB sources, adapters, merge rules, scraping policy
 
 For any change touching AI surfaces, prompts, or recommendation logic, `docs/AI_DESIGN.md` is mandatory pre-reading.
 
 For any change touching the schema, `docs/DATA_MODEL.md` is mandatory pre-reading.
+
+For any change touching adapters, scrapers, scheduled data jobs, or the seed knowledge base, `docs/DATA_SOURCING.md` is mandatory pre-reading.
 
 ---
 
