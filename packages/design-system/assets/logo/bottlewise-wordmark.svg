@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none" aria-label="Bottlewise wordmark">
+  <g stroke="#1F2A26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 12h16v6c0 1.5-1 2.5-2 3.5l-2 2c-1 1-1 2-1 3v2c0 1.2 1 2 2 2.6l2.5 1.5c2 1.2 3 3 3 5.2V52a6 6 0 0 1-6 6H28a6 6 0 0 1-6-6V37.8c0-2.2 1-4 3-5.2L27.5 31c1-.6 2-1.4 2-2.6v-2c0-1 0-2-1-3l-2-2c-1-1-1.5-2-1.5-3.5V12Z"></path>
+    <path d="M32 39c-3 3-3 7 0 8.6 3-1.6 3-5.6 0-8.6Z" fill="#6B8E7F" stroke="none"></path>
+    <line x1="22" y1="15.5" x2="42" y2="15.5"></line>
+  </g>
+  <text x="68" y="42" font-family="Newsreader, Georgia, serif" font-size="32" font-weight="600" fill="#1F2A26" letter-spacing="-0.5">Bottlewise</text>
+</svg>

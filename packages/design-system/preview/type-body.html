@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type — Body</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .row-spec { display: grid; grid-template-columns: 110px 1fr; gap: 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .row-spec:last-child { border-bottom: none; }
+  .row-spec .meta { font-family: var(--font-mono); font-size: var(--fs-12); color: var(--fg-2); }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div>
+      <div class="row-spec">
+        <span class="meta">H3 / 18 / 600</span>
+        <span class="h3">Why we picked this</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">Lead / 18 / 400</span>
+        <span class="text-lead">Cow milk, organic, no palm oil. Matches the gentle-introduction profile you flagged.</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">Body / 16 / 400</span>
+        <span class="text-body">About $1.78 per reconstituted ounce — the most expensive of your three matches, but the only one without palm oil at this stage.</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">Small / 14 / 400</span>
+        <span class="text-small">Last confirmed in stock 6 hours ago on Amazon.</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">Caption / 13 / 400</span>
+        <span class="text-caption">Not medical advice — confirm with your pediatrician.</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

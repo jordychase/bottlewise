@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .grid-b { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .meta { font-family: var(--font-mono); font-size: var(--fs-11); color: var(--fg-2); margin-bottom: 6px; display: block; }
+
+  button {
+    font-family: var(--font-body);
+    font-size: var(--fs-15);
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    line-height: 1;
+    letter-spacing: -0.005em;
+  }
+  .btn-primary { background: #6B8E7F; color: #FBF7EE; }
+  .btn-primary.hover { background: #4A6B5D; }
+  .btn-primary.disabled { background: #C5D2C9; color: rgba(251,247,238,0.8); cursor: not-allowed; }
+  .btn-secondary { background: transparent; color: #1F2A26; border-color: #C9C0AB; }
+  .btn-secondary.hover { background: #E6DFCF; }
+  .btn-tertiary { background: transparent; color: #4A6B5D; border-color: transparent; }
+  .btn-tertiary.hover { background: #DCE6DF; }
+  .btn-danger { background: #A94B3B; color: #FBF7EE; }
+  .btn-sm { padding: 6px 12px; font-size: var(--fs-13); border-radius: 8px; }
+  .btn-icon { display: inline-flex; gap: 8px; align-items: center; }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="group">
+      <button class="btn-primary">Get my picks</button>
+      <button class="btn-primary hover">Hover</button>
+      <button class="btn-primary disabled">Disabled</button>
+      <button class="btn-secondary">Skip for now</button>
+      <button class="btn-tertiary">Cancel</button>
+      <button class="btn-danger">Call pediatrician</button>
+    </div>
+    <div class="group">
+      <button class="btn-primary btn-sm btn-icon">
+        Continue
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+      <button class="btn-secondary btn-sm">Show all</button>
+      <button class="btn-tertiary btn-sm">Why this?</button>
+    </div>
+  </div>
+</body>
+</html>

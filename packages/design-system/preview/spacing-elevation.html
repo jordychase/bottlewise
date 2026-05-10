@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Elevation</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .row-e { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; padding: 16px 0; }
+  .demo {
+    background: var(--paper);
+    border-radius: var(--r-4);
+    padding: 22px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .demo .label { font-family: var(--font-mono); font-size: var(--fs-12); color: var(--fg-2); }
+  .demo .name { font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="row-e">
+      <div class="demo" style="box-shadow:0 1px 0 #E6DFCF;border:1px solid var(--border)">
+        <span class="name">Resting card</span>
+        <span class="label">--e1 · 1px mist</span>
+      </div>
+      <div class="demo" style="box-shadow:0 8px 24px -12px rgba(31,42,38,0.18)">
+        <span class="name">Sheet / popover</span>
+        <span class="label">--e2 · soft drop</span>
+      </div>
+      <div class="demo" style="box-shadow:0 24px 48px -16px rgba(31,42,38,0.24)">
+        <span class="name">Modal</span>
+        <span class="label">--e3 · deeper drop</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

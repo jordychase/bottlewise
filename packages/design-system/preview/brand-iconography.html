@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Iconography</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+  .grid-i { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .ic {
+    background: #FBF7EE;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: #1F2A26;
+  }
+  .ic svg { stroke-width: 1.5; }
+  .ic .label { font-family: var(--font-mono); font-size: 11px; color: var(--fg-2); }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="grid-i">
+      <div class="ic"><i data-lucide="baby"></i><span class="label">baby</span></div>
+      <div class="ic"><i data-lucide="milk"></i><span class="label">milk</span></div>
+      <div class="ic"><i data-lucide="package-2"></i><span class="label">package-2</span></div>
+      <div class="ic"><i data-lucide="globe-2"></i><span class="label">globe-2</span></div>
+      <div class="ic"><i data-lucide="shield-check"></i><span class="label">shield-check</span></div>
+      <div class="ic"><i data-lucide="sparkles"></i><span class="label">sparkles</span></div>
+      <div class="ic"><i data-lucide="alert-triangle"></i><span class="label">alert-triangle</span></div>
+      <div class="ic"><i data-lucide="octagon-alert"></i><span class="label">octagon-alert</span></div>
+      <div class="ic"><i data-lucide="info"></i><span class="label">info</span></div>
+      <div class="ic"><i data-lucide="message-circle"></i><span class="label">message-circle</span></div>
+      <div class="ic"><i data-lucide="search"></i><span class="label">search</span></div>
+      <div class="ic"><i data-lucide="arrow-right"></i><span class="label">arrow-right</span></div>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

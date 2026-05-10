@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Sage</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .stack { display: flex; gap: 12px; align-items: stretch; }
+  .sw {
+    flex: 1;
+    border-radius: var(--r-3);
+    border: 1px solid var(--border);
+    padding: 14px;
+    min-height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .sw .name { font-size: var(--fs-13); font-weight: 600; }
+  .sw .hex { font-family: var(--font-mono); font-size: var(--fs-12); }
+  .demo {
+    border-radius: var(--r-3);
+    border: 1px solid var(--border);
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #FBF7EE;
+  }
+  .pill { padding: 8px 14px; border-radius: 999px; font-size: var(--fs-13); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="stack">
+      <div class="sw" style="background:#DCE6DF;color:#1F2A26"><span class="name">Sage-soft</span><span class="hex" style="color:#5A6862">#DCE6DF</span></div>
+      <div class="sw" style="background:#6B8E7F;color:#FBF7EE"><span class="name">Sage</span><span class="hex" style="color:rgba(251,247,238,0.75)">#6B8E7F</span></div>
+      <div class="sw" style="background:#4A6B5D;color:#FBF7EE"><span class="name">Sage-deep</span><span class="hex" style="color:rgba(251,247,238,0.75)">#4A6B5D</span></div>
+    </div>
+    <div class="demo">
+      <span class="pill" style="background:#6B8E7F;color:#FBF7EE">Primary action</span>
+      <span class="pill" style="background:#DCE6DF;color:#4A6B5D">Selected chip</span>
+      <span class="pill" style="background:transparent;color:#4A6B5D;border:1px solid #6B8E7F">Outline</span>
+    </div>
+  </div>
+</body>
+</html>

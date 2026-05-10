@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Surfaces</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .sw {
+    aspect-ratio: 1 / 1.1;
+    border-radius: var(--r-3);
+    border: 1px solid var(--border);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--ink);
+  }
+  .sw .name { font-size: var(--fs-13); font-weight: 600; }
+  .sw .hex { font-family: var(--font-mono); font-size: var(--fs-12); color: var(--ink-2); }
+  .sw.dark { color: var(--paper); }
+  .sw.dark .hex { color: rgba(251,247,238,0.7); }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="swatch-grid">
+      <div class="sw" style="background:#F6F1E8"><span class="name">Oat</span><span class="hex">#F6F1E8</span></div>
+      <div class="sw" style="background:#FBF7EE"><span class="name">Paper</span><span class="hex">#FBF7EE</span></div>
+      <div class="sw" style="background:#E6DFCF"><span class="name">Mist</span><span class="hex">#E6DFCF</span></div>
+      <div class="sw dark" style="background:#94A09B"><span class="name">Ink-3</span><span class="hex">#94A09B</span></div>
+      <div class="sw dark" style="background:#5A6862"><span class="name">Ink-2</span><span class="hex">#5A6862</span></div>
+      <div class="sw dark" style="background:#1F2A26"><span class="name">Ink</span><span class="hex">#1F2A26</span></div>
+    </div>
+  </div>
+</body>
+</html>

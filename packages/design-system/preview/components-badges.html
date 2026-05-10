@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Badge system</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .group { display: flex; flex-direction: column; gap: 8px; }
+  .meta { font-size: var(--fs-12); color: var(--fg-2); font-family: var(--font-mono); letter-spacing: 0.02em; }
+  .row-c { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { padding: 5px 10px 5px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; line-height: 1; letter-spacing: 0.01em; }
+  .badge svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .dot { width: 6px; height: 6px; border-radius: 999px; flex-shrink: 0; }
+  .badge-square { padding: 5px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; line-height: 1; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+</style>
+</head>
+<body>
+  <div class="card-shell" style="gap: 14px;">
+    <div class="grid2">
+      <div class="group">
+        <span class="meta">Stock signal</span>
+        <div class="row-c">
+          <span class="badge" style="background:#DCE6DF;color:#3D6651"><span class="dot" style="background:#5C8A6E"></span>In stock</span>
+          <span class="badge" style="background:#F2DECE;color:#8C4A2D"><span class="dot" style="background:#C77E5C"></span>Low stock</span>
+          <span class="badge" style="background:#FBF7EE;color:#7E2E22;border:1px solid #ECCFC8"><span class="dot" style="background:#A94B3B"></span>Out of stock</span>
+        </div>
+      </div>
+      <div class="group">
+        <span class="meta">FDA / regulatory</span>
+        <div class="row-c">
+          <span class="badge" style="background:#DCE6DF;color:#3D6651">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+            FDA registered
+          </span>
+          <span class="badge" style="background:#F1E2BD;color:#7C5B1A">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            FDA enforcement discretion
+          </span>
+          <span class="badge" style="background:#A94B3B;color:#FFF">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Recalled
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="group">
+        <span class="meta">Match / personal</span>
+        <div class="row-c">
+          <span class="badge" style="background:#1F2A26;color:#FBF7EE">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>
+            Best match for Maya
+          </span>
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">2nd closest</span>
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">Substitution suggested</span>
+        </div>
+      </div>
+      <div class="group">
+        <span class="meta">Product attribute</span>
+        <div class="row-c">
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">Organic</span>
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">No palm oil</span>
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">Hypoallergenic</span>
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">Goat milk</span>
+          <span class="badge" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">A2 β-casein</span>
+          <span class="badge" style="background:#D6DEE3;color:#34505E">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            European import
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <span class="meta">Anatomy</span>
+      <div class="row-c" style="gap: 18px; align-items: flex-start;">
+        <div class="col" style="gap: 5px;">
+          <span class="badge" style="background:#DCE6DF;color:#3D6651"><span class="dot" style="background:#5C8A6E"></span>In stock</span>
+          <span class="meta" style="font-size: 10px;">5px 10px · pill · 12/600 · soft-success bg</span>
+        </div>
+        <div class="col" style="gap: 5px;">
+          <span class="badge" style="background:#A94B3B;color:#FFF">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Recalled
+          </span>
+          <span class="meta" style="font-size: 10px;">danger only · solid · safety reserved</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bottlewise — Brand directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  body { margin: 0; font-family: 'Hanken Grotesk', sans-serif; }
+  .bw-mock { width: 100%; height: 100%; box-sizing: border-box; padding: 22px 20px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .bw-mock h2 { margin: 0; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; }
+  .bw-mock .lead { font-size: 14px; line-height: 1.45; opacity: 0.75; }
+  .bw-mock .eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .bw-mock .btn { padding: 12px 18px; border-radius: 12px; font-weight: 600; font-size: 14px; border: none; display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; }
+  .bw-mock .card { padding: 14px; border-radius: 14px; display: flex; gap: 12px; align-items: flex-start; }
+  .bw-mock .tin { width: 52px; height: 52px; border-radius: 8px; flex-shrink: 0; }
+  .bw-mock .name { font-weight: 600; font-size: 15px; line-height: 1.2; }
+  .bw-mock .price { font-feature-settings: "tnum"; font-weight: 600; font-size: 16px; }
+  .bw-mock .chip { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+  .bw-mock .chip .dot { width: 5px; height: 5px; border-radius: 999px; }
+  .bw-mock .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+  .bw-mock .reason { font-size: 12px; line-height: 1.45; opacity: 0.78; margin-top: 6px; }
+  .bw-mock .swatches { display: flex; gap: 6px; margin-top: auto; padding-top: 8px; }
+  .bw-mock .sw { width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.08); }
+  .bw-mock .header { display: flex; align-items: center; gap: 8px; }
+  .bw-mock .logoMark { font-weight: 700; font-size: 14px; }
+  .bw-mock .meta { font-size: 11px; opacity: 0.6; font-family: 'Geist Mono', 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const A = (
+  <div className="bw-mock" style={{ background: '#F6F1E8', color: '#1F2A26', fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div className="header">
+      <div style={{ width: 22, height: 22, borderRadius: 6, background: '#6B8E7F' }} />
+      <span className="logoMark" style={{ fontFamily: "'Newsreader', serif", fontSize: 16, letterSpacing: '-0.01em' }}>Bottlewise</span>
+    </div>
+    <h2 style={{ fontFamily: "'Newsreader', serif", fontSize: 24 }}>Calmer formula decisions, grounded in what works.</h2>
+    <p className="lead">Three picks for your baby — with the reasons, the cost, and what's in stock today.</p>
+    <button className="btn" style={{ background: '#6B8E7F', color: '#FBF7EE', alignSelf: 'flex-start' }}>See my picks →</button>
+    <div style={{ height: 1, background: '#E6DFCF', margin: '4px 0' }} />
+    <span className="eyebrow" style={{ color: '#4A6B5D' }}>Best match for Maya</span>
+    <div className="card" style={{ background: '#FBF7EE', border: '1px solid #E6DFCF' }}>
+      <div className="tin" style={{ background: '#E6DFCF' }} />
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+          <span className="name" style={{ fontFamily: "'Newsreader', serif", fontSize: 16 }}>Bobbie Original</span>
+          <span className="price" style={{ fontFamily: "'Newsreader', serif" }}>$1.78<span style={{ fontSize: 10, fontFamily: "'Hanken Grotesk', sans-serif", color: '#5A6862', fontWeight: 500 }}>/oz</span></span>
+        </div>
+        <p className="reason">Cow milk, organic, no palm oil. Most expensive of your matches but the only one without palm oil.</p>
+        <div className="chips">
+          <span className="chip" style={{ background: '#DCE6DF', color: '#3D6651' }}><span className="dot" style={{ background: '#5C8A6E' }} />In stock</span>
+          <span className="chip" style={{ background: '#FBF7EE', color: '#5A6862', border: '1px solid #E6DFCF' }}>Organic</span>
+          <span className="chip" style={{ background: '#FBF7EE', color: '#5A6862', border: '1px solid #E6DFCF' }}>No palm oil</span>
+        </div>
+      </div>
+    </div>
+    <div className="swatches">
+      <div className="sw" style={{ background: '#F6F1E8' }} />
+      <div className="sw" style={{ background: '#FBF7EE' }} />
+      <div className="sw" style={{ background: '#6B8E7F' }} />
+      <div className="sw" style={{ background: '#4A6B5D' }} />
+      <div className="sw" style={{ background: '#C77E5C' }} />
+      <div className="sw" style={{ background: '#1F2A26' }} />
+    </div>
+    <div className="meta">Newsreader · Hanken Grotesk</div>
+  </div>
+);
+
+// B — Clinical Modern: white surfaces, slate/cobalt, geometric sans, sharper corners, more grid
+const B = (
+  <div className="bw-mock" style={{ background: '#FFFFFF', color: '#0E1116', fontFamily: "'Geist', 'Inter', sans-serif" }}>
+    <div className="header">
+      <div style={{ width: 22, height: 22, borderRadius: 4, background: '#0E1116', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 12, fontWeight: 700 }}>B</div>
+      <span className="logoMark" style={{ letterSpacing: '-0.02em', fontSize: 14, fontWeight: 700 }}>BOTTLEWISE</span>
+    </div>
+    <h2 style={{ fontSize: 26, letterSpacing: '-0.03em' }}>The right formula, with the receipts.</h2>
+    <p className="lead" style={{ color: '#5A6470' }}>Three matches scored against your baby's profile. Cost, stock, and ingredients laid out side-by-side.</p>
+    <button className="btn" style={{ background: '#0E1116', color: '#FFFFFF', borderRadius: 8 }}>Get my matches →</button>
+    <div style={{ height: 1, background: '#E5E8EC', margin: '4px 0' }} />
+    <span className="eyebrow" style={{ color: '#1B5BD3' }}>RANK 1 / SCORE 0.94</span>
+    <div className="card" style={{ background: '#F6F8FB', border: '1px solid #E5E8EC', borderRadius: 8 }}>
+      <div className="tin" style={{ background: '#E5E8EC', borderRadius: 4 }} />
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+          <span className="name" style={{ letterSpacing: '-0.01em' }}>Bobbie Original</span>
+          <span className="price" style={{ fontFamily: "'Geist Mono', monospace" }}>$1.78<span style={{ fontSize: 10, color: '#5A6470', fontWeight: 500 }}>/oz</span></span>
+        </div>
+        <p className="reason" style={{ color: '#5A6470' }}>Cow milk · Organic · No palm oil. Match: protein 1.0 · fat 1.0 · cost 0.84.</p>
+        <div className="chips">
+          <span className="chip" style={{ background: '#E1F0E5', color: '#1F6638' }}>● In stock</span>
+          <span className="chip" style={{ background: '#E8EEF8', color: '#1B5BD3' }}>FDA</span>
+          <span className="chip" style={{ background: '#F6F8FB', color: '#5A6470', border: '1px solid #E5E8EC' }}>Organic</span>
+        </div>
+      </div>
+    </div>
+    <div className="swatches">
+      <div className="sw" style={{ background: '#FFFFFF' }} />
+      <div className="sw" style={{ background: '#F6F8FB' }} />
+      <div className="sw" style={{ background: '#1B5BD3' }} />
+      <div className="sw" style={{ background: '#0E1116' }} />
+      <div className="sw" style={{ background: '#1F6638' }} />
+      <div className="sw" style={{ background: '#5A6470' }} />
+    </div>
+    <div className="meta">Geist · Geist Mono · Tighter, data-forward</div>
+  </div>
+);
+
+// C — Warm Editorial: ivory, deep ink, terracotta, big italic serif moments
+const C = (
+  <div className="bw-mock" style={{ background: '#F8F2E7', color: '#241410', fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div className="header">
+      <span className="logoMark" style={{ fontFamily: "'Fraunces', serif", fontSize: 18, fontWeight: 700, letterSpacing: '-0.02em' }}>Bottlewise<span style={{ color: '#B8472E' }}>.</span></span>
+    </div>
+    <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 30, fontWeight: 500, letterSpacing: '-0.03em' }}>
+      A <em style={{ fontFamily: "'Instrument Serif', serif", fontWeight: 400, color: '#B8472E' }}>thoughtful</em> way to choose your baby's formula.
+    </h2>
+    <p className="lead" style={{ color: '#6E4D44' }}>Three picks, clearly reasoned. Honest about cost, honest about what's actually on the shelf.</p>
+    <button className="btn" style={{ background: '#241410', color: '#F8F2E7', borderRadius: 999, padding: '11px 20px' }}>Begin →</button>
+    <div style={{ height: 1, background: '#E6D7C2', margin: '4px 0' }} />
+    <span className="eyebrow" style={{ color: '#B8472E', fontFamily: "'Fraunces', serif", fontSize: 11, fontStyle: 'italic', textTransform: 'none', letterSpacing: 0, fontWeight: 500 }}>— Best match for Maya</span>
+    <div className="card" style={{ background: '#FCF7EC', border: '1px solid #E6D7C2', borderRadius: 4 }}>
+      <div className="tin" style={{ background: '#E6D7C2', borderRadius: 4 }} />
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'baseline' }}>
+          <span className="name" style={{ fontFamily: "'Fraunces', serif", fontSize: 17, fontWeight: 500 }}>Bobbie Original</span>
+          <span className="price" style={{ fontFamily: "'Fraunces', serif", fontWeight: 500 }}>$1.78</span>
+        </div>
+        <p className="reason" style={{ color: '#6E4D44' }}>Cow milk · organic · no palm oil. The most expensive of your three, and the only one without palm at this stage.</p>
+        <div className="chips">
+          <span className="chip" style={{ background: '#241410', color: '#F8F2E7' }}>In stock</span>
+          <span className="chip" style={{ background: 'transparent', color: '#6E4D44', border: '1px solid #B8472E' }}>Organic</span>
+          <span className="chip" style={{ background: 'transparent', color: '#6E4D44', border: '1px solid #B8472E' }}>No palm oil</span>
+        </div>
+      </div>
+    </div>
+    <div className="swatches">
+      <div className="sw" style={{ background: '#F8F2E7' }} />
+      <div className="sw" style={{ background: '#FCF7EC' }} />
+      <div className="sw" style={{ background: '#B8472E' }} />
+      <div className="sw" style={{ background: '#241410' }} />
+      <div className="sw" style={{ background: '#6E4D44' }} />
+      <div className="sw" style={{ background: '#D9A14F' }} />
+    </div>
+    <div className="meta">Fraunces · Instrument Serif (italic) · Hanken</div>
+  </div>
+);
+
+// D — Bright Utility: paper white, near-black, electric lime, geometric sans, generous numbers
+const D = (
+  <div className="bw-mock" style={{ background: '#FAFAF7', color: '#0A0A0A', fontFamily: "'Space Grotesk', 'Inter', sans-serif" }}>
+    <div className="header">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px 4px 6px', background: '#0A0A0A', color: '#D6FF4A', borderRadius: 999 }}>
+        <div style={{ width: 14, height: 14, borderRadius: 999, background: '#D6FF4A' }} />
+        <span style={{ fontWeight: 700, fontSize: 12, letterSpacing: '0.04em' }}>BOTTLEWISE</span>
+      </div>
+    </div>
+    <h2 style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 0.98 }}>Three picks. Real stock. No&nbsp;guessing.</h2>
+    <p className="lead" style={{ color: '#5C5C5C' }}>The first formula concierge that actually tells you what's on the shelf.</p>
+    <div style={{ display: 'flex', gap: 8 }}>
+      <button className="btn" style={{ background: '#D6FF4A', color: '#0A0A0A', borderRadius: 999, padding: '11px 18px' }}>→ Match me</button>
+      <button className="btn" style={{ background: 'transparent', color: '#0A0A0A', border: '1px solid #0A0A0A', borderRadius: 999, padding: '11px 16px' }}>How it works</button>
+    </div>
+    <div style={{ height: 1, background: '#E5E5E0', margin: '4px 0' }} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 32, letterSpacing: '-0.04em', lineHeight: 1 }}>01</span>
+      <span className="eyebrow" style={{ color: '#0A0A0A' }}>BEST MATCH · MAYA</span>
+    </div>
+    <div className="card" style={{ background: '#FFFFFF', border: '1px solid #0A0A0A', borderRadius: 16 }}>
+      <div className="tin" style={{ background: '#D6FF4A', borderRadius: 8 }} />
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'baseline' }}>
+          <span className="name" style={{ letterSpacing: '-0.01em', fontWeight: 700 }}>Bobbie Original</span>
+          <span className="price" style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, letterSpacing: '-0.02em' }}>$1.78<span style={{ fontSize: 10, fontWeight: 500, color: '#5C5C5C' }}>/oz</span></span>
+        </div>
+        <p className="reason" style={{ color: '#5C5C5C' }}>Cow milk · organic · no palm oil. Pricier, but cleanest profile of your three.</p>
+        <div className="chips">
+          <span className="chip" style={{ background: '#D6FF4A', color: '#0A0A0A' }}>● IN STOCK</span>
+          <span className="chip" style={{ background: '#0A0A0A', color: '#FAFAF7' }}>ORGANIC</span>
+          <span className="chip" style={{ background: 'transparent', color: '#0A0A0A', border: '1px solid #0A0A0A' }}>NO PALM</span>
+        </div>
+      </div>
+    </div>
+    <div className="swatches">
+      <div className="sw" style={{ background: '#FAFAF7' }} />
+      <div className="sw" style={{ background: '#FFFFFF' }} />
+      <div className="sw" style={{ background: '#D6FF4A' }} />
+      <div className="sw" style={{ background: '#0A0A0A' }} />
+      <div className="sw" style={{ background: '#5C5C5C' }} />
+      <div className="sw" style={{ background: '#E5E5E0' }} />
+    </div>
+    <div className="meta">Space Grotesk · Bold · High-contrast</div>
+  </div>
+);
+
+const App = () => (
+  <DesignCanvas title="Bottlewise · 4 brand directions" subtitle="A is the current direction. B / C / D are exploratory.">
+    <DCSection id="dirs" title="Visual directions">
+      <DCArtboard id="a" label="A · Apothecary calm (current)" width={360} height={560}>{A}</DCArtboard>
+      <DCArtboard id="b" label="B · Clinical modern" width={360} height={560}>{B}</DCArtboard>
+      <DCArtboard id="c" label="C · Warm editorial" width={360} height={560}>{C}</DCArtboard>
+      <DCArtboard id="d" label="D · Bright utility" width={360} height={560}>{D}</DCArtboard>
+    </DCSection>
+  </DesignCanvas>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

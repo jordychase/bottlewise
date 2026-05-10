@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type — Display</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .row-spec { display: grid; grid-template-columns: 90px 1fr; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .row-spec:last-child { border-bottom: none; }
+  .row-spec .meta { font-family: var(--font-mono); font-size: var(--fs-12); color: var(--fg-2); }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div>
+      <div class="row-spec">
+        <span class="meta">D1 / 64 / 600</span>
+        <span class="display-1" style="font-size:64px">Calm guidance.</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">D2 / 48 / 600</span>
+        <span class="display-2" style="font-size:48px">Best match for Maya</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">H1 / 32 / 600</span>
+        <span class="h1">Bobbie Original</span>
+      </div>
+      <div class="row-spec">
+        <span class="meta">H2 / 24 / 600</span>
+        <span class="h2">Three picks for your baby</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

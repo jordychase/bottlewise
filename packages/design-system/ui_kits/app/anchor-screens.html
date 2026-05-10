@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bottlewise — Anchor screens</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  body { margin: 0; background: #2A211D; padding: 32px; font-family: var(--font-body); color: var(--ink); min-height: 100vh; }
+  .pageTitle { color: #FBF7EE; font-family: var(--font-display); font-size: 22px; font-weight: 600; max-width: 1280px; margin: 0 auto 6px; letter-spacing: -0.01em; }
+  .pageSub { color: rgba(251, 247, 238, 0.6); font-size: 13px; max-width: 1280px; margin: 0 auto 28px; line-height: 1.5; }
+
+  .row { max-width: 1280px; margin: 0 auto; display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; justify-content: center; }
+  .frame { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .frame .label { color: rgba(251, 247, 238, 0.7); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .phone {
+    width: 390px; height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    box-shadow: 0 24px 64px -16px rgba(0,0,0,0.4), inset 0 0 0 8px #1F1A18;
+    overflow: hidden;
+    position: relative;
+  }
+  .notch {
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 28px; background: #1F1A18; border-radius: 999px; z-index: 5;
+  }
+  .statusbar {
+    flex-shrink: 0; height: 44px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 32px 0; font-size: 14px; font-weight: 600; color: var(--ink);
+  }
+  .statusbar .icons { display: flex; gap: 5px; align-items: center; }
+  .screen { position: absolute; inset: 0; overflow: hidden; display: flex; flex-direction: column; }
+  .screen-body { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 0 24px; overflow: hidden; }
+
+  /* Desktop adaptation */
+  .desktop {
+    width: 1280px;
+    height: 800px;
+    background: var(--bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px -16px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+// ============ Shared atoms ============
+const Sage = '#6B8E7F', SageDeep = '#4A6B5D', SageSoft = '#DCE6DF';
+const Oat = '#F6F1E8', Paper = '#FBF7EE', Mist = '#E6DFCF';
+const Ink = '#1F2A26', Ink2 = '#5A6862', Ink3 = '#94A09B';
+const Clay = '#C77E5C', ClaySoft = '#F2DECE', Honey = '#D4A24C', HoneySoft = '#F1E2BD';
+const Danger = '#A94B3B', DangerSoft = '#ECCFC8';
+
+const StatusBar = () => (
+  <div className="statusbar">
+    <span style={{ fontFeatureSettings: '"tnum"' }}>9:41</span>
+    <div className="icons">
+      <svg width="18" height="11" viewBox="0 0 18 11" fill="none"><path d="M1 5h2v5H1zM5 3h2v7H5zM9 1h2v9H9zM13 1h2v9h-2z" fill={Ink}/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z M7.5 5.5c1.7 0 3.2.6 4.4 1.6l1-1.2C11.4 4.6 9.5 4 7.5 4S3.6 4.6 2.1 5.9l1 1.2C4.3 6.1 5.8 5.5 7.5 5.5z M7.5 1c2.7 0 5.2 1 7.1 2.6l-1 1.2C12 3.5 9.9 2.7 7.5 2.7S3 3.5 1.4 4.8l-1-1.2C2.3 2 4.8 1 7.5 1z" fill={Ink}/></svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x="0.5" y="0.5" width="20" height="10" rx="2.5" stroke={Ink} fill="none"/><rect x="2" y="2" width="16" height="7" rx="1" fill={Ink}/><rect x="21" y="3" width="1.5" height="5" rx="0.5" fill={Ink}/></svg>
+    </div>
+  </div>
+);
+
+const Pill = ({ children, bg, color, border, dot, icon }) => (
+  <span style={{
+    background: bg, color, border: border || 'none',
+    padding: '5px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600,
+    display: 'inline-flex', alignItems: 'center', gap: 6, lineHeight: 1, letterSpacing: 0.1,
+  }}>
+    {dot && <span style={{ width: 6, height: 6, borderRadius: 999, background: dot }} />}
+    {icon}
+    {children}
+  </span>
+);
+
+const ChevronRight = ({ size = 16, color = Ink }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+);
+
+const Sparkle = ({ size = 14, color }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color || 'currentColor'} stroke={color || 'currentColor'} strokeWidth="0"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg>
+);
+
+// ============ Screen 1: Landing ============
+const Landing = () => (
+  <div className="screen" style={{ background: Oat }}>
+    <StatusBar />
+   <div className="screen-body">
+    {/* Top */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 28, marginTop: 8 }}>
+      <div style={{ width: 28, height: 28, borderRadius: 8, background: Sage, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={Paper} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2h8"/><path d="M9 2v3a4 4 0 0 0 6 0V2"/><rect x="6" y="9" width="12" height="13" rx="3"/><path d="M9 14h6"/></svg>
+      </div>
+      <span style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, color: Ink, letterSpacing: '-0.01em' }}>Bottlewise</span>
+      <span style={{ marginLeft: 'auto', fontSize: 13, color: Ink2, fontWeight: 500 }}>Sign in</span>
+    </div>
+
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: SageDeep, textTransform: 'uppercase' }}>The formula concierge</span>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 30, fontWeight: 600, lineHeight: 1.1, color: Ink, letterSpacing: '-0.02em', margin: 0 }}>
+          The calmest place to make the most stressful decision of new parenthood.
+        </h1>
+        <p style={{ fontSize: 14.5, lineHeight: 1.5, color: Ink2, margin: 0 }}>
+          Three formula picks for your baby — with the reasons, the cost (with tariffs), and what's actually in stock today.
+        </p>
+      </div>
+
+      <button style={{
+        background: Sage, color: Paper, border: 'none', borderRadius: 14,
+        padding: '16px 22px', fontSize: 16, fontWeight: 600, fontFamily: 'inherit',
+        marginTop: 24, display: 'inline-flex', alignItems: 'center', justifyContent: 'space-between',
+        cursor: 'pointer',
+      }}>
+        Find my baby's match
+        <ChevronRight color={Paper} />
+      </button>
+      <button style={{
+        background: 'transparent', color: Ink, border: 'none', borderRadius: 14,
+        padding: '12px 0 0', fontSize: 14, fontWeight: 600, fontFamily: 'inherit',
+        textAlign: 'center', textDecoration: 'underline', textDecorationColor: Mist,
+      }}>
+        How Bottlewise works
+      </button>
+
+      {/* Inline preview removed at mobile — hero + CTAs do the talking. */}
+
+      <div style={{ marginTop: 'auto', paddingTop: 18, paddingBottom: 18, fontSize: 11, color: Ink3, lineHeight: 1.5, textAlign: 'center' }}>
+        Decision support, not medical advice. Always confirm with your pediatrician.
+      </div>
+    </div>
+   </div>
+  </div>
+);
+
+// ============ Screen 2: Onboarding (one question per screen) ============
+const Onboarding = () => {
+  const opts = ['Gas', 'Reflux / spit-up', 'Fussy after feeds', 'Hard or infrequent stools', 'Eczema or skin issue', 'Allergic reaction', 'None of the above'];
+  const selected = new Set(['Gas', 'Fussy after feeds']);
+  return (
+    <div className="screen" style={{ background: Oat }}>
+      <StatusBar />
+     <div className="screen-body">
+      {/* Progress + back */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 8, marginBottom: 24 }}>
+        <button style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 999, color: Ink }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div style={{ flex: 1, display: 'flex', gap: 6 }}>
+          {[1,2,3,4,5,6].map(i => (
+            <div key={i} style={{ flex: 1, height: 3, borderRadius: 999, background: i <= 4 ? Sage : Mist }} />
+          ))}
+        </div>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: Ink2, fontFeatureSettings: '"tnum"' }}>4/6</span>
+      </div>
+
+      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', color: SageDeep, textTransform: 'uppercase' }}>About Maya</span>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 600, lineHeight: 1.1, color: Ink, letterSpacing: '-0.02em', margin: '8px 0 8px' }}>
+        What's Maya dealing with right now?
+      </h2>
+      <p style={{ fontSize: 15, lineHeight: 1.5, color: Ink2, marginBottom: 22 }}>
+        Pick anything that fits — or skip if nothing applies. We won't diagnose anything; this just helps us narrow.
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+        {opts.map(opt => {
+          const sel = selected.has(opt);
+          return (
+            <button key={opt} style={{
+              background: sel ? SageSoft : Paper,
+              color: sel ? SageDeep : Ink,
+              border: `1.5px solid ${sel ? Sage : Mist}`,
+              borderRadius: 14, padding: '14px 16px',
+              fontSize: 15, fontWeight: sel ? 600 : 500, fontFamily: 'inherit',
+              textAlign: 'left', cursor: 'pointer',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            }}>
+              {opt}
+              {sel && (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={SageDeep} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 24, paddingTop: 16 }}>
+        <button style={{ background: Sage, color: Paper, border: 'none', borderRadius: 14, padding: '16px 18px', fontSize: 15, fontWeight: 600, fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}>
+          Continue <ChevronRight color={Paper} />
+        </button>
+        <button style={{ background: 'transparent', color: Ink2, border: 'none', padding: 6, fontSize: 14, fontWeight: 500, fontFamily: 'inherit', cursor: 'pointer' }}>
+          Skip — none of the above
+        </button>
+      </div>
+     </div>
+    </div>
+  );
+};
+
+// ============ Recommendation card (the hero) ============
+const RecCard = ({ rank, name, brand, price, perFeed, total, reason, chips, badges, isPrimary, recalled }) => (
+  <div style={{
+    background: Paper, border: `1.5px solid ${isPrimary ? Sage : Mist}`,
+    borderRadius: 16, padding: 16, display: 'flex', flexDirection: 'column', gap: 12,
+    position: 'relative',
+  }}>
+    {recalled && (
+      <div style={{ background: Danger, color: '#FFF', borderRadius: 8, padding: '6px 10px', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Active recall — Lot 2K104B5
+      </div>
+    )}
+    <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+      <div style={{ width: 56, height: 72, borderRadius: 8, background: Mist, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: Ink2, fontSize: 9, fontWeight: 600, textAlign: 'center', padding: 4 }}>{brand.toUpperCase()}</div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'flex-start' }}>
+          <div style={{ minWidth: 0, flex: 1 }}>
+            <div style={{ fontSize: 11, color: Ink2, marginBottom: 1 }}>{brand}</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 600, color: Ink, letterSpacing: '-0.01em', lineHeight: 1.15 }}>{name}</div>
+          </div>
+          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 20, color: Ink, fontFeatureSettings: '"tnum"', letterSpacing: '-0.01em', lineHeight: 1.1 }}>${price}<span style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 500, color: Ink2 }}>/oz</span></div>
+            <div style={{ fontSize: 10.5, color: Ink2, marginTop: 2, fontFeatureSettings: '"tnum"' }}>${perFeed}/feed</div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 6 }}>
+          {badges.map((b, i) => (
+            <Pill key={i} bg={b.bg} color={b.color} border={b.border}>{b.label}</Pill>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '10px 12px', background: isPrimary ? SageSoft : Oat, borderRadius: 10 }}>
+      <Sparkle size={14} color={isPrimary ? SageDeep : Ink2} />
+      <p style={{ fontSize: 12.5, lineHeight: 1.45, color: isPrimary ? SageDeep : Ink, margin: 0, flex: 1 }}>
+        <strong style={{ fontWeight: 600 }}>Why this matches Maya:</strong> {reason}
+      </p>
+    </div>
+
+    <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+      {chips.map((c, i) => (
+        <Pill key={i} bg={c.bg} color={c.color} border={c.border} dot={c.dot}>{c.label}</Pill>
+      ))}
+    </div>
+
+    <div style={{ display: 'flex', gap: 8, paddingTop: 4, borderTop: `1px solid ${Mist}` }}>
+      <button style={{ flex: 1, background: isPrimary ? Sage : Ink, color: Paper, border: 'none', borderRadius: 10, padding: '10px 12px', fontSize: 13, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}>See full breakdown</button>
+      <button style={{ background: 'transparent', color: Ink, border: `1px solid ${Mist}`, borderRadius: 10, padding: '10px 12px', fontSize: 13, fontWeight: 600, fontFamily: 'inherit', cursor: 'pointer' }}>Find next closest</button>
+    </div>
+  </div>
+);
+
+// ============ Screen 3: Recommendations ============
+const Recommendations = () => (
+  <div className="screen" style={{ background: Oat, overflow: 'hidden' }}>
+    <StatusBar />
+    {/* Sticky-ish top bar */}
+    <div style={{ padding: '14px 20px 12px', borderBottom: `1px solid ${Mist}`, background: 'rgba(246, 241, 232, 0.92)', backdropFilter: 'blur(12px)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer', color: Ink, display: 'flex' }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: Ink, letterSpacing: '-0.01em' }}>3 picks for Maya</div>
+          <div style={{ fontSize: 11, color: Ink2, marginTop: 1 }}>4 mo · gas + fussy · cow milk OK · $35/wk budget</div>
+        </div>
+        <button style={{ background: Paper, border: `1px solid ${Mist}`, borderRadius: 999, padding: '6px 10px', fontSize: 11, fontWeight: 600, color: Ink2, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          Refine
+        </button>
+      </div>
+    </div>
+
+    <div style={{ flex: 1, overflow: 'auto', padding: '14px 20px 80px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <RecCard
+        rank={1} brand="Bobbie" name="Bobbie Original" price="1.78" perFeed="0.71" total="26.00"
+        isPrimary
+        reason="Cow milk, organic, no palm oil. Matches your gentle-introduction profile, and the family eczema history doesn't rule it out."
+        badges={[
+          { label: 'Best', bg: Ink, color: Paper },
+          { label: 'FDA', bg: SageSoft, color: SageDeep },
+        ]}
+        chips={[
+          { label: 'In stock locally', bg: SageSoft, color: SageDeep, dot: Sage },
+          { label: 'Organic', bg: Paper, color: Ink2, border: `1px solid ${Mist}` },
+          { label: 'No palm oil', bg: Paper, color: Ink2, border: `1px solid ${Mist}` },
+        ]}
+      />
+      <RecCard
+        rank={2} brand="ByHeart" name="ByHeart Whole Nutrition" price="1.62" perFeed="0.65" total="36.00"
+        reason="Same protein source as your top pick, slightly different fat blend. 9% cheaper per ounce."
+        badges={[
+          { label: '#2', bg: Paper, color: Ink2, border: `1px solid ${Mist}` },
+          { label: 'FDA', bg: SageSoft, color: SageDeep },
+        ]}
+        chips={[
+          { label: 'In stock — Amazon', bg: SageSoft, color: SageDeep, dot: Sage },
+          { label: '−9% vs #1', bg: SageSoft, color: SageDeep },
+          { label: 'Has palm oil', bg: HoneySoft, color: '#7C5B1A' },
+        ]}
+      />
+      <RecCard
+        rank={3} brand="HiPP" name="HiPP Combiotic Stage 1" price="2.04" perFeed="0.82" total="48.40"
+        reason="European cow-milk option with prebiotics. Pricier with the +12% tariff, but matches your gentle-on-tummy ask very directly."
+        badges={[
+          { label: 'Import', bg: '#D6DEE3', color: '#34505E' },
+          { label: 'FDA discretion', bg: HoneySoft, color: '#7C5B1A' },
+        ]}
+        chips={[
+          { label: 'Low stock', bg: ClaySoft, color: '#8C4A2D', dot: Clay },
+          { label: '+12% tariff', bg: ClaySoft, color: '#8C4A2D' },
+          { label: 'No palm oil', bg: Paper, color: Ink2, border: `1px solid ${Mist}` },
+        ]}
+      />
+
+      {/* Avoid these section */}
+      <div style={{ marginTop: 8, padding: 14, background: 'transparent', border: `1px dashed ${Mist}`, borderRadius: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={Ink2} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', color: Ink2, textTransform: 'uppercase' }}>Avoid for Maya</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 12.5, color: Ink2, lineHeight: 1.45 }}>
+          <div><strong style={{ color: Ink, fontWeight: 600 }}>Enfamil NeuroPro</strong> — contains soy oil. You flagged a soy avoidance.</div>
+          <div><strong style={{ color: Ink, fontWeight: 600 }}>Similac Pro-Advance</strong> — corn syrup solids as primary carb. Better matches available.</div>
+        </div>
+      </div>
+    </div>
+
+    {/* Persistent disclaimer footer */}
+    <div style={{
+      position: 'absolute', bottom: 0, left: 0, right: 0,
+      background: 'rgba(251, 247, 238, 0.95)', backdropFilter: 'blur(8px)',
+      borderTop: `1px solid ${Mist}`, padding: '10px 20px 22px',
+      display: 'flex', alignItems: 'center', gap: 10,
+    }}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={Danger} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+      <span style={{ fontSize: 11.5, color: Ink2, lineHeight: 1.4, flex: 1 }}>
+        Decision support, not medical advice. <span style={{ color: Ink, textDecoration: 'underline', fontWeight: 600 }}>Confirm with your pediatrician</span>.
+      </span>
+    </div>
+  </div>
+);
+
+// ============ Desktop adaptation: Recommendations at 1280px ============
+const RecommendationsDesktop = () => (
+  <div className="desktop">
+    <div style={{ padding: '20px 32px 16px', borderBottom: `1px solid ${Mist}`, display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: Sage, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={Paper} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2h8"/><path d="M9 2v3a4 4 0 0 0 6 0V2"/><rect x="6" y="9" width="12" height="13" rx="3"/><path d="M9 14h6"/></svg>
+        </div>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600, color: Ink, letterSpacing: '-0.01em' }}>Bottlewise</span>
+      </div>
+      <div style={{ marginLeft: 24, display: 'flex', alignItems: 'baseline', gap: 12 }}>
+        <span style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 600, color: Ink, letterSpacing: '-0.01em' }}>3 picks for Maya</span>
+        <span style={{ fontSize: 12, color: Ink2 }}>4 mo · gas + fussy · cow milk OK · $35/wk budget</span>
+      </div>
+      <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+        <button style={{ background: Paper, border: `1px solid ${Mist}`, borderRadius: 999, padding: '8px 14px', fontSize: 12, fontWeight: 600, color: Ink, cursor: 'pointer' }}>Refine</button>
+        <button style={{ background: Sage, border: 'none', borderRadius: 999, padding: '8px 14px', fontSize: 12, fontWeight: 600, color: Paper, cursor: 'pointer' }}>Save list</button>
+      </div>
+    </div>
+
+    {/* 3-up layout */}
+    <div style={{ flex: 1, padding: 32, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, overflow: 'hidden' }}>
+      <RecCard brand="Bobbie" name="Bobbie Original" price="1.78" perFeed="0.71" total="26.00" isPrimary
+        reason="Cow milk, organic, no palm oil. Matches your gentle-introduction profile."
+        badges={[{ label: 'Best match', bg: Ink, color: Paper }, { label: 'FDA registered', bg: SageSoft, color: SageDeep }]}
+        chips={[{ label: 'In stock', bg: SageSoft, color: SageDeep, dot: Sage }, { label: 'Organic', bg: Paper, color: Ink2, border: `1px solid ${Mist}` }, { label: 'No palm oil', bg: Paper, color: Ink2, border: `1px solid ${Mist}` }]}
+      />
+      <RecCard brand="ByHeart" name="ByHeart Whole Nutrition" price="1.62" perFeed="0.65" total="36.00"
+        reason="Same protein source as your top pick, slightly different fat blend. 9% cheaper."
+        badges={[{ label: '2nd closest', bg: Paper, color: Ink2, border: `1px solid ${Mist}` }, { label: 'FDA registered', bg: SageSoft, color: SageDeep }]}
+        chips={[{ label: 'In stock — Amazon', bg: SageSoft, color: SageDeep, dot: Sage }, { label: '−9% vs #1', bg: SageSoft, color: SageDeep }, { label: 'Has palm oil', bg: HoneySoft, color: '#7C5B1A' }]}
+      />
+      <RecCard brand="HiPP" name="HiPP Combiotic Stage 1" price="2.04" perFeed="0.82" total="48.40"
+        reason="European cow-milk option with prebiotics. Pricier with the +12% tariff."
+        badges={[{ label: 'European import', bg: '#D6DEE3', color: '#34505E' }, { label: 'FDA enforcement discretion', bg: HoneySoft, color: '#7C5B1A' }]}
+        chips={[{ label: 'Low stock', bg: ClaySoft, color: '#8C4A2D', dot: Clay }, { label: '+12% tariff', bg: ClaySoft, color: '#8C4A2D' }]}
+      />
+    </div>
+
+    <div style={{ padding: '12px 32px', borderTop: `1px solid ${Mist}`, background: Paper, display: 'flex', alignItems: 'center', gap: 10 }}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={Danger} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+      <span style={{ fontSize: 12, color: Ink2 }}>Decision support, not medical advice. <span style={{ color: Ink, textDecoration: 'underline', fontWeight: 600 }}>Confirm with your pediatrician</span>.</span>
+    </div>
+  </div>
+);
+
+const App = () => (
+  <>
+    <h1 className="pageTitle">Bottlewise · 3 anchor screens</h1>
+    <p className="pageSub">Mobile 390×844 (the design target — Expo web/PWA first). Desktop 1280-wide adaptation of recommendations at the bottom.</p>
+    <div className="row">
+      <div className="frame"><span className="label">01 · Landing / value-prop</span><div className="phone"><div className="notch"/><Landing /></div></div>
+      <div className="frame"><span className="label">02 · Onboarding · Q4 of 6</span><div className="phone"><div className="notch"/><Onboarding /></div></div>
+      <div className="frame"><span className="label">03 · Recommendation results</span><div className="phone"><div className="notch"/><Recommendations /></div></div>
+    </div>
+
+    <div style={{ height: 48 }} />
+
+    <h1 className="pageTitle">Desktop adaptation</h1>
+    <p className="pageSub">3-up grid; same component, looser spacing, persistent disclaimer footer.</p>
+    <div className="row">
+      <div className="frame"><span className="label">Recommendations · 1280×800</span><RecommendationsDesktop /></div>
+    </div>
+  </>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

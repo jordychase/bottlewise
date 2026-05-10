@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chips</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .row-c { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .chip { padding: 6px 12px; border-radius: 999px; font-size: var(--fs-13); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; line-height: 1; }
+  .dot { width: 6px; height: 6px; border-radius: 999px; }
+  .meta { font-size: var(--fs-12); color: var(--fg-2); font-family: var(--font-mono); }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <span class="meta">Stock</span>
+    <div class="row-c">
+      <span class="chip" style="background:#DCE6DF;color:#3D6651"><span class="dot" style="background:#5C8A6E"></span>In stock — 6h ago</span>
+      <span class="chip" style="background:#F2DECE;color:#8C4A2D"><span class="dot" style="background:#C77E5C"></span>Low stock locally</span>
+      <span class="chip" style="background:#ECCFC8;color:#7E2E22"><span class="dot" style="background:#A94B3B"></span>Out of stock</span>
+      <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF"><span class="dot" style="background:#94A09B"></span>Unknown</span>
+    </div>
+    <span class="meta">Origin & status</span>
+    <div class="row-c">
+      <span class="chip" style="background:#F1E2BD;color:#7C5B1A">European import</span>
+      <span class="chip" style="background:#DCE6DF;color:#3D6651">FDA-registered</span>
+      <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">No palm oil</span>
+      <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">Organic</span>
+      <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">A2 protein</span>
+    </div>
+    <span class="meta">Cost</span>
+    <div class="row-c">
+      <span class="chip" style="background:#F2DECE;color:#8C4A2D">+12% landed cost</span>
+      <span class="chip" style="background:#DCE6DF;color:#3D6651">−9% vs your current</span>
+      <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">$1.78 / oz</span>
+    </div>
+  </div>
+</body>
+</html>

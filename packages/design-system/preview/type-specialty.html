@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type — Specialty</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .block { padding: 16px; background: var(--paper); border: 1px solid var(--border); border-radius: var(--r-3); }
+  .meta { font-family: var(--font-mono); font-size: var(--fs-12); color: var(--fg-2); display:block; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="grid2">
+      <div class="block">
+        <span class="meta">eyebrow</span>
+        <span class="eyebrow">Stock signals</span>
+      </div>
+      <div class="block">
+        <span class="meta">numeric (display, tabular)</span>
+        <div class="numeric" style="font-size:40px;font-weight:600;line-height:1.1;color:var(--ink)">$1.78<span style="font-family:var(--font-body);font-size:14px;color:var(--ink-2);font-weight:500;letter-spacing:0"> / oz</span></div>
+      </div>
+      <div class="block">
+        <span class="meta">code</span>
+        <code>HTS 1901.10.30</code>
+      </div>
+      <div class="block">
+        <span class="meta">link</span>
+        <span style="font-size:var(--fs-16)">See <a href="#">why we picked this</a> →</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

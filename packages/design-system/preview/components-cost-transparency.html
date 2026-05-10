@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cost transparency</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .label { font-size: 11px; color: var(--fg-2); font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .cost {
+    background: #FBF7EE;
+    border: 1px solid #E6DFCF;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cost.tariffed { background: linear-gradient(0deg, #FBF7EE 0%, #FBF7EE 100%); border: 1px solid #F2DECE; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .key { font-size: 13px; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+  .val {
+    font-family: var(--font-display);
+    font-feature-settings: "tnum" 1, "lnum" 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .val .unit { font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--ink-2); margin-left: 2px; }
+  .primary .val { font-size: 22px; }
+  .secondary .val { font-size: 14px; }
+  .tertiary .val { font-size: 13px; color: var(--ink-2); }
+  .divider { height: 1px; background: #E6DFCF; margin: 2px 0; }
+  .tariff-tag {
+    background: #F2DECE;
+    color: #8C4A2D;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .footnote { font-size: 11px; color: var(--ink-2); line-height: 1.4; }
+  .footnote .stamp { font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+  <div class="card-shell" style="gap: 14px;">
+    <div class="grid2">
+      <div>
+        <span class="label">Domestic — 2 lines + total</span>
+        <div class="cost" style="margin-top: 6px;">
+          <div class="row primary">
+            <span class="key">Per reconstituted oz</span>
+            <span class="val">$1.78<span class="unit">/oz</span></span>
+          </div>
+          <div class="row secondary">
+            <span class="key">Per 4-oz feed</span>
+            <span class="val">$0.71<span class="unit">/feed</span></span>
+          </div>
+          <div class="divider"></div>
+          <div class="row tertiary">
+            <span class="key">21 oz can · Bobbie Original</span>
+            <span class="val">$26.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span class="label">European import — 3 lines + tariff</span>
+        <div class="cost tariffed" style="margin-top: 6px;">
+          <div class="row primary">
+            <span class="key">Per reconstituted oz <span class="tariff-tag">+12% tariff</span></span>
+            <span class="val">$2.04<span class="unit">/oz</span></span>
+          </div>
+          <div class="row secondary">
+            <span class="key">Per 4-oz feed</span>
+            <span class="val">$0.82<span class="unit">/feed</span></span>
+          </div>
+          <div class="divider"></div>
+          <div class="row tertiary">
+            <span class="key">800g · HiPP Combiotic Stage 1 · landed</span>
+            <span class="val">$48.40</span>
+          </div>
+          <div class="footnote">
+            Sticker $43.20 + $5.20 duty (HTS 1901.10.30) + clearance.
+            <span class="stamp">As of 6h ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 14px; padding-top: 4px; border-top: 1px solid #E6DFCF;">
+      <div style="flex: 1;">
+        <span class="label" style="font-size: 10px;">Layout rule</span>
+        <p style="font-size: 12px; color: var(--ink-2); line-height: 1.45; margin-top: 4px;">
+          Per-oz first (the unit parents actually compare). Per-feed second (the unit they'll feel weekly). Total third with line-item provenance — never the headline. Tariff +% surfaces inline next to the per-oz line, never as a footnote.
+        </p>
+      </div>
+      <div style="flex: 1;">
+        <span class="label" style="font-size: 10px;">Type</span>
+        <p style="font-size: 12px; color: var(--ink-2); line-height: 1.45; margin-top: 4px;">
+          Numerals in <strong style="color: var(--ink); font-family: var(--font-display);">Newsreader</strong> with tabular figures. Units in body sans, smaller, fg-2. Timestamp in mono. Sticker → duty → landed always reads top-down so the math is visible.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

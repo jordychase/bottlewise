@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Formula card</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .formula-card {
+    background: #FBF7EE;
+    border: 1px solid #E6DFCF;
+    border-radius: 16px;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .tin {
+    width: 88px; height: 88px;
+    border-radius: 12px;
+    background: #E6DFCF;
+    display: flex; align-items: center; justify-content: center;
+    color: #5A6862; font-size: var(--fs-12); font-family: var(--font-mono);
+  }
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .eyebrow-pick { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4A6B5D; }
+  .name { font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.15; color: var(--ink); margin-top: 2px; }
+  .reason { color: #5A6862; font-size: 14px; line-height: 1.5; margin-top: 6px; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .chip { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; display:inline-flex; gap:5px; align-items:center; }
+  .dot { width: 5px; height: 5px; border-radius: 999px; }
+  .price { font-family: var(--font-display); font-feature-settings: "tnum" 1; font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing:-0.01em;}
+  .price small { font-family: var(--font-body); font-size: 12px; color: var(--ink-2); font-weight: 500; letter-spacing: 0; }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="formula-card">
+      <div class="tin">[ tin ]</div>
+      <div>
+        <div class="head">
+          <div>
+            <div class="eyebrow-pick">Best match for Maya</div>
+            <div class="name">Bobbie Original Infant Formula</div>
+          </div>
+          <div class="price">$1.78<small> / oz</small></div>
+        </div>
+        <div class="reason">Cow milk, organic, no palm oil. Matches the gentle-introduction profile you flagged. The most expensive of your three matches, but the only one without palm oil at this stage.</div>
+        <div class="chips">
+          <span class="chip" style="background:#DCE6DF;color:#3D6651"><span class="dot" style="background:#5C8A6E"></span>In stock — 6h ago</span>
+          <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">Organic</span>
+          <span class="chip" style="background:#FBF7EE;color:#5A6862;border:1px solid #E6DFCF">No palm oil</span>
+          <span class="chip" style="background:#DCE6DF;color:#3D6651">FDA-registered</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

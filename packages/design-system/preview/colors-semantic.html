@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors — Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_base.css">
+<style>
+  .stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .sw {
+    border-radius: var(--r-3);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .sw .top { padding: 14px; min-height: 56px; color: #FBF7EE; font-weight: 600; font-size: var(--fs-13); }
+  .sw .bot { padding: 10px 14px; font-family: var(--font-mono); font-size: var(--fs-12); color: var(--ink-2); display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+  <div class="card-shell">
+    <div class="stack">
+      <div class="sw">
+        <div class="top" style="background:#5C8A6E">Success</div>
+        <div class="bot"><span>#5C8A6E</span><span style="color:#5C8A6E">in stock</span></div>
+      </div>
+      <div class="sw">
+        <div class="top" style="background:#C77E5C">Warning</div>
+        <div class="bot"><span>#C77E5C</span><span style="color:#C77E5C">low stock</span></div>
+      </div>
+      <div class="sw">
+        <div class="top" style="background:#A94B3B">Danger</div>
+        <div class="bot"><span>#A94B3B</span><span style="color:#A94B3B">recall</span></div>
+      </div>
+      <div class="sw">
+        <div class="top" style="background:#5C7A8A">Info</div>
+        <div class="bot"><span>#5C7A8A</span><span style="color:#5C7A8A">notice</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+      <div style="background:#DCE6DF;color:#3D6651;padding:10px 14px;border-radius:999px;font-size:var(--fs-13);font-weight:600;text-align:center">In stock — 6h ago</div>
+      <div style="background:#F2DECE;color:#8C4A2D;padding:10px 14px;border-radius:999px;font-size:var(--fs-13);font-weight:600;text-align:center">Low stock locally</div>
+      <div style="background:#ECCFC8;color:#7E2E22;padding:10px 14px;border-radius:999px;font-size:var(--fs-13);font-weight:600;text-align:center">Recalled — 2024</div>
+      <div style="background:#D6DEE3;color:#3F5663;padding:10px 14px;border-radius:999px;font-size:var(--fs-13);font-weight:600;text-align:center">Updated weekly</div>
+    </div>
+  </div>
+</body>
+</html>
