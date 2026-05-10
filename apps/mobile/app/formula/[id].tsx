@@ -1,20 +1,60 @@
 import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { ScreenFrame } from "@/components/ScreenFrame";
 import { Eyebrow } from "@/components/Eyebrow";
 import { Chip } from "@/components/Chip";
 import { IngredientReview } from "@/components/IngredientReview";
+import { QuantitySuggester } from "@/components/QuantitySuggester";
+import { ExperienceModal } from "@/components/ExperienceModal";
+import { CommunityExperiences } from "@/components/CommunityExperiences";
+import { Button } from "@/components/Button";
 import { findFormulaById } from "@/data/formula-catalog";
 import { scoreFormula } from "@/lib/ingredient-score";
+import { narrate, type NarrationOutput } from "@/lib/narrator";
+import { aggregateForFormula, getDisplayedExperiencesForFormula } from "@/lib/community";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
 
 // Demo profile for the personalized notes layer. Until we wire the
 // real onboarding state, this stub demonstrates the surface.
-const DEMO_PROFILE = { familySoyAllergy: false, familyEczema: true };
+const DEMO_PROFILE = {
+  babyNameFirst: "Maya",
+  babyAgeMonths: 3,
+  familySoyAllergy: false,
+  familyEczema: true,
+  familyCmpa: false,
+  preemie: false,
+};
 
 export default function FormulaDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const formula = id ? findFormulaById(id) : undefined;
+
+  const [narration, setNarration] = useState<NarrationOutput | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [communityVersion, setCommunityVersion] = useState(0);
+
+  const hasIngredients =
+    formula && Array.isArray(formula.ingredients) && formula.ingredients.length > 0;
+  const breakdown =
+    formula && hasIngredients
+      ? scoreFormula({
+          ingredients: formula.ingredients!,
+          attributes: formula.attributes ?? [],
+          babyProfile: DEMO_PROFILE,
+        })
+      : null;
+
+  useEffect(() => {
+    if (!formula || !breakdown) return;
+    let cancelled = false;
+    narrate({ breakdown, formula, profile: DEMO_PROFILE }).then((out) => {
+      if (!cancelled) setNarration(out);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [formula?.id]);
 
   if (!formula) {
     return (
@@ -33,14 +73,10 @@ export default function FormulaDetailScreen() {
     );
   }
 
-  const hasIngredients = Array.isArray(formula.ingredients) && formula.ingredients.length > 0;
-  const breakdown = hasIngredients
-    ? scoreFormula({
-        ingredients: formula.ingredients!,
-        attributes: formula.attributes ?? [],
-        babyProfile: DEMO_PROFILE,
-      })
-    : null;
+  const experiences = getDisplayedExperiencesForFormula(formula.id);
+  const aggregate = aggregateForFormula(formula.id);
+  // Read once so the linter sees it; the state triggers re-render on submit.
+  void communityVersion;
 
   return (
     <ScreenFrame disclaimer>
@@ -99,6 +135,64 @@ export default function FormulaDetailScreen() {
         </View>
       </View>
 
+      {narration && (
+        <View
+          style={{
+            backgroundColor: colors.sageSoft,
+            borderRadius: radii.r4,
+            padding: spacing.s5,
+            gap: spacing.s2,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: fonts.bodyBold,
+                fontSize: 11,
+                color: colors.sageInk,
+                letterSpacing: 0.8,
+                textTransform: "uppercase",
+              }}
+            >
+              A note for {DEMO_PROFILE.babyNameFirst}
+            </Text>
+            <Chip tone={narration.source === "claude" ? "sage" : "neutral"}>
+              {narration.source === "claude" ? "Personalized" : "Templated"}
+            </Chip>
+          </View>
+          {narration.sentences.map((s, i) => (
+            <Text
+              key={i}
+              style={{
+                fontFamily: fonts.body,
+                fontSize: 14,
+                color: colors.ink,
+                lineHeight: 21,
+              }}
+            >
+              {s}
+            </Text>
+          ))}
+          <Text
+            style={{
+              fontFamily: fonts.body,
+              fontSize: 12,
+              color: colors.ink2,
+              lineHeight: 17,
+              marginTop: 4,
+            }}
+          >
+            Talk to your pediatrician before changing formulas.
+          </Text>
+        </View>
+      )}
+
       {breakdown ? (
         <IngredientReview breakdown={breakdown} ingredients={formula.ingredients!} />
       ) : (
@@ -122,6 +216,22 @@ export default function FormulaDetailScreen() {
           </Text>
         </View>
       )}
+
+      <QuantitySuggester formula={formula} ageMonths={DEMO_PROFILE.babyAgeMonths} />
+
+      <View style={{ gap: spacing.s3 }}>
+        <CommunityExperiences experiences={experiences} aggregate={aggregate} />
+        <Button variant="secondary" full onPress={() => setModalOpen(true)}>
+          Share what happened for {DEMO_PROFILE.babyNameFirst}
+        </Button>
+      </View>
+
+      <ExperienceModal
+        formulaId={formula.id}
+        visible={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSaved={() => setCommunityVersion((v) => v + 1)}
+      />
     </ScreenFrame>
   );
 }

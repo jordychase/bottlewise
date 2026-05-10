@@ -28,6 +28,17 @@ export type FormulaSegment =
   | "plant_based"
   | "toddler";
 
+export type RecallClassification = "class_i" | "class_ii" | "class_iii";
+
+export interface ActiveRecall {
+  classification: RecallClassification;
+  recallNumber: string;
+  recallDate: string;
+  reason: string;
+  status: "ongoing" | "completed" | "terminated";
+  source: string;
+}
+
 export interface FormulaProduct {
   id: string;
   brandId: string;
@@ -36,6 +47,12 @@ export interface FormulaProduct {
   fullName: string;
   tagline: string;
   packageSize?: string;
+  /** Grams of dry powder in the standard package. Used by the quantity
+   *  suggester to compute reconstituted ounces. */
+  packageGrams?: number;
+  /** Grams of dry powder required per reconstituted ounce (~3.5g typical).
+   *  When omitted the suggester uses a 3.5g default. */
+  gramsPerOz?: number;
   segments: FormulaSegment[];
   searchTags: string[];
   tinAccent: string;
@@ -47,6 +64,10 @@ export interface FormulaProduct {
    *  oil) sourced from product metadata rather than the ingredient list
    *  itself. The ingredient-score engine combines both. */
   attributes?: string[];
+  /** Active or recent recall against this product. The recall pivot in
+   *  /troubleshoot routes to the safety interstitial when this is
+   *  present with status='ongoing'. */
+  activeRecall?: ActiveRecall;
 }
 
 const A = colors.sageSoft;
@@ -56,6 +77,31 @@ const D = colors.honeySoft;
 const E = colors.infoSoft;
 
 export const FORMULA_CATALOG: FormulaProduct[] = [
+  // ─── Demo: synthetic recall entry ───────────────────────────────────
+  // Clearly fictional brand. Exists ONLY to demo the recall pivot
+  // without misinforming about any real product.
+  {
+    id: "demo-recall-acme",
+    brandId: "demo-acme",
+    brandName: "Acme Sample (Demo)",
+    productName: "Recall Demonstration Formula",
+    fullName: "Acme Sample Recall Demonstration Formula",
+    tagline: "Synthetic demo entry — used to show the recall flow",
+    packageSize: "12.4 oz powder",
+    packageGrams: 352,
+    segments: ["mass_market"],
+    searchTags: ["acme", "demo", "test recall", "recall demo"],
+    tinAccent: colors.dangerSoft,
+    activeRecall: {
+      classification: "class_i",
+      recallNumber: "F-DEMO-2026",
+      recallDate: "2026-04-22",
+      status: "ongoing",
+      reason: "Synthetic demonstration. In production this surfaces real openFDA recall events the moment they post.",
+      source: "Bottlewise demo entry",
+    },
+  },
+
   // ─── Mass-market US ────────────────────────────────────────────────
   {
     id: "enfamil-neuropro",

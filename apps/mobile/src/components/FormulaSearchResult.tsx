@@ -31,14 +31,15 @@ export function FormulaSearchResult({ formula, onPress }: Props) {
   const isSpecialty =
     formula.segments.includes("specialty_hypoallergenic") ||
     formula.segments.includes("specialty_amino_acid");
+  const hasActiveRecall = formula.activeRecall?.status === "ongoing";
 
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => ({
-        backgroundColor: pressed ? colors.sageSoft : colors.paper,
-        borderColor: colors.mist,
-        borderWidth: 1,
+        backgroundColor: pressed ? (hasActiveRecall ? colors.dangerSoft : colors.sageSoft) : colors.paper,
+        borderColor: hasActiveRecall ? colors.danger : colors.mist,
+        borderWidth: hasActiveRecall ? 2 : 1,
         borderRadius: radii.r3,
         padding: spacing.s3,
         flexDirection: "row",
@@ -60,8 +61,9 @@ export function FormulaSearchResult({ formula, onPress }: Props) {
         >
           {formula.tagline}
         </Text>
-        {(isImport || isPrivateLabel || isSpecialty) && (
+        {(hasActiveRecall || isImport || isPrivateLabel || isSpecialty) && (
           <View style={{ flexDirection: "row", gap: 6, marginTop: 4, flexWrap: "wrap" }}>
+            {hasActiveRecall && <Chip tone="danger" dot>Active recall</Chip>}
             {isImport && <Chip tone="honey">European import</Chip>}
             {isPrivateLabel && <Chip tone="info">Store brand</Chip>}
             {isSpecialty && <Chip tone="warn">Specialty</Chip>}

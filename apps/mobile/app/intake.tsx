@@ -16,8 +16,17 @@ const ISSUES = [
   { id: "none", label: "None of the above", exclusive: true },
 ];
 
+const PREP_METHODS = [
+  { id: "hand", label: "Hand-measure with the scoop", hint: "The included scoop, mixed manually." },
+  { id: "baby_brezza", label: "Baby Brezza Formula Pro", hint: "We'll show the calibrated setting for each formula." },
+  { id: "tommee_tippee", label: "Tommee Tippee Perfect Prep", hint: "Calibration per formula where available." },
+  { id: "dr_browns", label: "Dr. Brown's Insta-Feed", hint: "Calibration per formula where available." },
+  { id: "other", label: "Other / still figuring it out", hint: "We'll keep prep tips generic for now." },
+];
+
 export default function IntakeScreen() {
   const [selected, setSelected] = useState<Set<string>>(new Set(["reflux", "fussy"]));
+  const [prep, setPrep] = useState<string>("hand");
 
   const toggle = (id: string, exclusive?: boolean) => {
     setSelected((prev) => {
@@ -58,7 +67,55 @@ export default function IntakeScreen() {
         </Text>
       </View>
 
-      <View style={{ gap: spacing.s2, marginTop: spacing.s3 }}>
+      <View style={{ gap: spacing.s2, marginTop: spacing.s4 }}>
+        <Eyebrow>How do you prepare bottles?</Eyebrow>
+        {PREP_METHODS.map((method) => {
+          const active = prep === method.id;
+          return (
+            <Pressable
+              key={method.id}
+              onPress={() => setPrep(method.id)}
+              style={{
+                backgroundColor: colors.paper,
+                borderColor: active ? colors.sage : colors.mist,
+                borderWidth: active ? 2 : 1,
+                borderRadius: radii.r3,
+                padding: 14,
+                flexDirection: "row",
+                gap: spacing.s3,
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  width: 18,
+                  height: 18,
+                  borderRadius: 999,
+                  borderWidth: 1.5,
+                  borderColor: active ? colors.sage : colors.borderStrong,
+                  backgroundColor: active ? colors.sage : "transparent",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                {active && <View style={{ width: 7, height: 7, borderRadius: 999, backgroundColor: colors.paper }} />}
+              </View>
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <Text style={{ fontFamily: fonts.bodySemi, fontSize: 14, color: colors.ink }}>
+                  {method.label}
+                </Text>
+                <Text style={{ fontFamily: fonts.body, fontSize: 12, color: colors.ink2, lineHeight: 17, marginTop: 1 }}>
+                  {method.hint}
+                </Text>
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      <View style={{ gap: spacing.s2, marginTop: spacing.s4 }}>
+        <Eyebrow>What's Maya dealing with?</Eyebrow>
         {ISSUES.map((issue) => {
           const isSelected = selected.has(issue.id);
           return (
