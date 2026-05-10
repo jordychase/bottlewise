@@ -11,7 +11,9 @@
   "scripts": {
     "seed:list": "pnpm --filter @bottlewise/db run seed:list",
     "seed:dry": "pnpm --filter @bottlewise/db run seed:dry",
+    "seed:validate": "pnpm --filter @bottlewise/db run seed:validate",
     "seed": "pnpm --filter @bottlewise/db run seed",
+    "fda": "pnpm --filter @bottlewise/db run fda",
     "test": "pnpm -r run test",
     "typecheck": "pnpm -r run typecheck"
   },

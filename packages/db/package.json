@@ -8,7 +8,9 @@
   "scripts": {
     "seed:list": "tsx src/sources/bin/seed.ts --list",
     "seed:dry": "tsx src/sources/bin/seed.ts --dry",
+    "seed:validate": "tsx src/sources/bin/seed.ts --validate",
     "seed": "tsx src/sources/bin/seed.ts",
+    "fda": "tsx src/sources/bin/fda.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"

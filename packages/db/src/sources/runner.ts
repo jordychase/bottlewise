@@ -14,6 +14,15 @@ import { runShopifyAdapter } from "./engines/shopify.js";
 import { runJsonLdAdapter } from "./engines/jsonld.js";
 import { runHtmlAdapter } from "./engines/html.js";
 import {
+  hasAmazonCredentials,
+  searchAmazon,
+} from "./adapters/amazon-pa-api.js";
+import {
+  hasWalmartCredentials,
+  searchWalmart,
+} from "./adapters/walmart.js";
+import { searchTarget } from "./adapters/target-redsky.js";
+import {
   fieldCoverage,
   normalizeHtmlProduct,
   normalizeJsonLdProduct,
@@ -23,6 +32,8 @@ import { BRAND_REGISTRY, findBrand } from "./registry.js";
 import type {
   AdapterResult,
   BrandRegistryEntry,
+  RawProduct,
+  RetailerApiConfig,
   RunOptions,
 } from "./types.js";
 
@@ -32,25 +43,7 @@ export async function runAdapter(
   const cfg = brand.config;
 
   if (cfg.engine === "retailer_api") {
-    return {
-      brandId: brand.id,
-      adapterId: `retailer:${cfg.retailers.join("+")}`,
-      startedAt: new Date().toISOString(),
-      endedAt: new Date().toISOString(),
-      recordsSeen: 0,
-      recordsNormalized: 0,
-      errors: [
-        {
-          brandId: brand.id,
-          message:
-            "retailer_api engine not implemented in V1 — sourced via Amazon PA-API / Walmart / Target adapters per DATA_SOURCING.md § 2 Tier D",
-          code: "ENGINE_DEFERRED",
-        },
-      ],
-      fieldCoverage: {},
-      rawProducts: [],
-      normalized: [],
-    };
+    return runRetailerAdapter(brand, cfg);
   }
 
   if (cfg.engine === "manual_only") {
@@ -189,4 +182,98 @@ async function persist(result: AdapterResult, outputDir: string): Promise<void> 
   const path = join(outputDir, result.brandId, `${ts}.json`);
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, JSON.stringify(result, null, 2), "utf8");
+}
+
+/**
+ * Dispatches a `retailer_api` brand entry to one or more Tier D
+ * adapters. Each retailer returns price + stock signals only — no
+ * composition data — and the result rolls up into a single
+ * AdapterResult with raw payloads keyed by retailer.
+ */
+async function runRetailerAdapter(
+  brand: BrandRegistryEntry,
+  cfg: RetailerApiConfig,
+): Promise<AdapterResult> {
+  const startedAt = new Date().toISOString();
+  const errors: AdapterResult["errors"] = [];
+  const rawProducts: RawProduct[] = [];
+
+  for (const retailer of cfg.retailers) {
+    try {
+      if (retailer === "amazon") {
+        if (!hasAmazonCredentials()) {
+          errors.push({
+            brandId: brand.id,
+            message:
+              "amazon: AMAZON_PA_ACCESS_KEY / SECRET_KEY / ASSOCIATE_TAG not set",
+            code: "NO_CREDENTIALS",
+          });
+          continue;
+        }
+        const results = await searchAmazon({
+          searchTerm: cfg.searchTerm,
+          brandFilter: brand.name,
+        });
+        for (const r of results) {
+          rawProducts.push({
+            brandId: brand.id,
+            externalId: `amazon:${r.asin}`,
+            productUrl: r.detailPageUrl ?? `https://www.amazon.com/dp/${r.asin}`,
+            rawPayload: r as unknown as Record<string, unknown>,
+            fetchedAt: r.fetchedAt,
+          });
+        }
+      } else if (retailer === "walmart") {
+        if (!hasWalmartCredentials()) {
+          errors.push({
+            brandId: brand.id,
+            message:
+              "walmart: WALMART_CONSUMER_ID / WALMART_PRIVATE_KEY not set",
+            code: "NO_CREDENTIALS",
+          });
+          continue;
+        }
+        const results = await searchWalmart({ searchTerm: cfg.searchTerm });
+        for (const r of results) {
+          rawProducts.push({
+            brandId: brand.id,
+            externalId: `walmart:${r.itemId}`,
+            productUrl: r.productUrl ?? "",
+            rawPayload: r as unknown as Record<string, unknown>,
+            fetchedAt: r.fetchedAt,
+          });
+        }
+      } else if (retailer === "target") {
+        const results = await searchTarget({ searchTerm: cfg.searchTerm });
+        for (const r of results) {
+          rawProducts.push({
+            brandId: brand.id,
+            externalId: `target:${r.tcin}`,
+            productUrl: r.productUrl ?? `https://www.target.com/p/-/A-${r.tcin}`,
+            rawPayload: r as unknown as Record<string, unknown>,
+            fetchedAt: r.fetchedAt,
+          });
+        }
+      }
+    } catch (err) {
+      errors.push({
+        brandId: brand.id,
+        message: `${retailer}: ${(err as Error).message}`,
+        code: "RETAILER_FAILED",
+      });
+    }
+  }
+
+  return {
+    brandId: brand.id,
+    adapterId: `retailer:${cfg.retailers.join("+")}`,
+    startedAt,
+    endedAt: new Date().toISOString(),
+    recordsSeen: rawProducts.length,
+    recordsNormalized: 0,
+    errors,
+    fieldCoverage: {},
+    rawProducts,
+    normalized: [],
+  };
 }

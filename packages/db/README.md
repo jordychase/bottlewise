@@ -36,20 +36,48 @@ pnpm seed:list
 # Dry run — dispatch every brand without fetching anything
 pnpm seed:dry
 
+# Validate every registry entry (1–3 probe requests per brand)
+pnpm seed:validate
+
 # Live run for one brand, persisting raw + normalized payloads
 pnpm --filter @bottlewise/db run seed -- --brand=bobbie --out=./staging
 
 # Live run for an entire segment
 pnpm --filter @bottlewise/db run seed -- --segment=european_import --out=./staging
+
+# FDA gate: submissions list + openFDA recalls
+pnpm fda --out=./staging/fda
+pnpm fda --recalls-only --since=2024-01-01
 ```
 
 CLI flags (`packages/db/src/sources/bin/seed.ts`):
 - `--list` — print every brand grouped by segment
 - `--dry` — dispatch-only, no network requests
+- `--validate` — probe each entry's engine + config; reports pass/fail + hints
 - `--brand=<id>` — single brand
 - `--segment=<segment>` — all brands in a segment (`mass_market`, `premium_dtc`, `european_import`, ...)
 - `--limit=<n>` — cap brand count
 - `--out=<dir>` — persist raw + normalized JSON per brand
+
+### Tier D retailer adapters
+
+Private-label brands (Parent's Choice, Up & Up, Comforts, Kirkland, Mama Bear, Berkley Jensen, Tippy Toes, CVS Health, HEB, Member's Mark) ship with no DTC site. Their registry entries route to `retailer_api` and dispatch to one or more of:
+
+| Retailer | Adapter | Auth | Required env |
+|---|---|---|---|
+| Amazon | `amazon-pa-api.ts` | AWS SigV4 | `AMAZON_PA_ACCESS_KEY`, `AMAZON_PA_SECRET_KEY`, `AMAZON_PA_ASSOCIATE_TAG` |
+| Walmart | `walmart.ts` | RSA-signed (Affiliate API) | `WALMART_CONSUMER_ID`, `WALMART_PRIVATE_KEY`, `WALMART_PRIVATE_KEY_VERSION` |
+| Target | `target-redsky.ts` | Public visitor key (rotates) | `TARGET_REDSKY_VISITOR_KEY` (optional override) |
+
+Without credentials, the runner returns `NO_CREDENTIALS` errors for the affected brands and skips. Target works without explicit credentials but the visitor key may need periodic rotation.
+
+### FDA gate adapter
+
+`packages/db/src/sources/adapters/fda-submissions.ts` parses the FDA Infant Formula Submissions HTML page into structured records. The gate principle (DATA_SOURCING.md § 1) means a formula doesn't surface to users unless its brand + product appear in this list (or a curator overlay marks it `enforcement_discretion`).
+
+`packages/db/src/sources/adapters/openfda-recalls.ts` polls `api.fda.gov/food/enforcement.json` for infant-formula keywords. Class I events are isolated for downstream notification + recommendation downrank.
+
+Run both via `pnpm fda` (full sweep) or `pnpm fda --submissions-only` / `--recalls-only` for individual paths.
 
 ### Validation status
 

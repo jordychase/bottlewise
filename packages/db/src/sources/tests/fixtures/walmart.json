@@ -1,0 +1,27 @@
+{
+  "totalResults": 2,
+  "query": "parent's choice infant formula",
+  "items": [
+    {
+      "itemId": 12345678,
+      "name": "Parent's Choice Advantage Infant Formula 35 oz",
+      "brandName": "Parent's Choice",
+      "upc": "078742000000",
+      "productUrl": "https://www.walmart.com/ip/12345678",
+      "salePrice": 16.97,
+      "msrp": 19.97,
+      "stock": "Available",
+      "availableOnline": true
+    },
+    {
+      "itemId": 87654321,
+      "name": "Parent's Choice Sensitivity Infant Formula 33.2 oz",
+      "brandName": "Parent's Choice",
+      "upc": "078742111111",
+      "productUrl": "https://www.walmart.com/ip/87654321",
+      "salePrice": 18.97,
+      "stock": "Available",
+      "availableOnline": true
+    }
+  ]
+}

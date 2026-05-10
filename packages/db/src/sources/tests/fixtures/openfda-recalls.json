@@ -1,0 +1,34 @@
+{
+  "meta": {
+    "results": { "skip": 0, "limit": 100, "total": 2 }
+  },
+  "results": [
+    {
+      "recall_number": "F-0123-2025",
+      "product_description": "Acme Brand Infant Formula, Hypoallergenic, 12.4 oz can, UPC 1234567890",
+      "reason_for_recall": "Potential Cronobacter sakazakii contamination identified during routine surveillance.",
+      "classification": "Class I",
+      "status": "Ongoing",
+      "recall_initiation_date": "20250114",
+      "termination_date": null,
+      "recalling_firm": "Acme Nutrition Inc.",
+      "distribution_pattern": "Nationwide",
+      "voluntary_mandated": "Voluntary: Firm Initiated",
+      "city": "Sturgis",
+      "state": "MI",
+      "country": "United States"
+    },
+    {
+      "recall_number": "F-0099-2024",
+      "product_description": "Tester Toddler Formula 28 oz",
+      "reason_for_recall": "Mislabeled allergen — soy not declared on principal display panel.",
+      "classification": "Class II",
+      "status": "Terminated",
+      "recall_initiation_date": "20240602",
+      "termination_date": "20241201",
+      "recalling_firm": "Tester Brands LLC",
+      "distribution_pattern": "Northeast US",
+      "voluntary_mandated": "Voluntary: Firm Initiated"
+    }
+  ]
+}

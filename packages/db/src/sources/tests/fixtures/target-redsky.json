@@ -1,0 +1,27 @@
+{
+  "data": {
+    "search": {
+      "products": [
+        {
+          "tcin": "12345678",
+          "item": {
+            "product_brand": { "brand": "Up & Up" },
+            "product_description": { "title": "Up & Up Advantage Infant Formula 35 oz" },
+            "enrichment": { "buy_url": "https://www.target.com/p/-/A-12345678" }
+          },
+          "price": { "current_retail": 17.49, "reg_retail": 19.99 },
+          "fulfillment": { "is_out_of_stock_in_all_store_locations": false }
+        },
+        {
+          "tcin": "87654321",
+          "item": {
+            "product_brand": { "brand": "Up & Up" },
+            "product_description": { "title": "Up & Up Sensitivity Infant Formula 33.2 oz" }
+          },
+          "price": { "current_retail": 18.99 },
+          "fulfillment": { "is_out_of_stock_in_all_store_locations": true }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "SearchResult": {
+    "Items": [
+      {
+        "ASIN": "B07ABCDEFG",
+        "DetailPageURL": "https://www.amazon.com/dp/B07ABCDEFG",
+        "ItemInfo": {
+          "Title": { "DisplayValue": "Mama Bear Gentle Infant Formula 23.2 oz" },
+          "ByLineInfo": { "Brand": { "DisplayValue": "Mama Bear" } }
+        },
+        "Offers": {
+          "Listings": [
+            {
+              "Price": { "Amount": 18.99, "Currency": "USD" },
+              "Availability": { "Message": "In Stock" }
+            }
+          ]
+        }
+      },
+      {
+        "ASIN": "B08HIJKLMN",
+        "DetailPageURL": "https://www.amazon.com/dp/B08HIJKLMN",
+        "ItemInfo": {
+          "Title": { "DisplayValue": "Mama Bear Sensitive Infant Formula 35.3 oz" },
+          "ByLineInfo": { "Brand": { "DisplayValue": "Mama Bear" } }
+        },
+        "Offers": {
+          "Listings": [
+            {
+              "Price": { "Amount": 27.5, "Currency": "USD" },
+              "Availability": { "Message": "Only 3 left in stock" }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

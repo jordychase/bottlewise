@@ -15,12 +15,14 @@
  */
 
 import { runAll } from "../runner.js";
-import { BRAND_REGISTRY, listBrands } from "../registry.js";
+import { BRAND_REGISTRY, findBrand, listBrands } from "../registry.js";
+import { validateBrand } from "../validate.js";
 import type { BrandSegment, RunOptions } from "../types.js";
 
 interface ParsedArgs {
   list?: boolean;
   dry?: boolean;
+  validate?: boolean;
   brand?: string;
   segment?: BrandSegment;
   limit?: number;
@@ -32,6 +34,7 @@ function parseArgs(argv: string[]): ParsedArgs {
   for (const arg of argv) {
     if (arg === "--list") out.list = true;
     else if (arg === "--dry") out.dry = true;
+    else if (arg === "--validate") out.validate = true;
     else if (arg.startsWith("--brand=")) out.brand = arg.slice("--brand=".length);
     else if (arg.startsWith("--segment="))
       out.segment = arg.slice("--segment=".length) as BrandSegment;
@@ -41,6 +44,32 @@ function parseArgs(argv: string[]): ParsedArgs {
       out.out = arg.slice("--out=".length);
   }
   return out;
+}
+
+async function runValidation(args: ParsedArgs): Promise<void> {
+  const targets = args.brand
+    ? [findBrand(args.brand)].filter(Boolean) as typeof BRAND_REGISTRY
+    : args.segment
+      ? BRAND_REGISTRY.filter((b) => b.segments.includes(args.segment!))
+      : BRAND_REGISTRY;
+  const slice = targets.slice(0, args.limit ?? targets.length);
+  console.log(`Validating ${slice.length} brand(s)...\n`);
+  let pass = 0;
+  let fail = 0;
+  let skipped = 0;
+  for (const brand of slice) {
+    const r = await validateBrand(brand);
+    const icon = r.status === "pass" ? "✓" : r.status === "fail" ? "✗" : "·";
+    console.log(
+      `${icon} ${r.brandId.padEnd(28)} ${r.engine.padEnd(13)} ${r.message}`,
+    );
+    if (r.hint) console.log(`     hint: ${r.hint}`);
+    if (r.status === "pass") pass++;
+    else if (r.status === "fail") fail++;
+    else skipped++;
+  }
+  console.log(`\nValidation: ${pass} pass, ${fail} fail, ${skipped} skipped.`);
+  if (fail > 0) process.exitCode = 1;
 }
 
 function printList(): void {
@@ -75,6 +104,11 @@ async function main(): Promise<void> {
 
   if (args.list) {
     printList();
+    return;
+  }
+
+  if (args.validate) {
+    await runValidation(args);
     return;
   }
 

@@ -292,16 +292,16 @@ See § 9 Open Decisions item 1.
 
 ## 10. Implementation order
 
-Suggested sequencing for the seed KB build, top-down dependencies. ✅ = shipped.
+Suggested sequencing for the seed KB build, top-down dependencies. ✅ = shipped, 🟡 = scaffolded but needs validation/credentials.
 
 1. ✅ Brand registry + three generic engines (`shopify`, `jsonld`, `html`) + polite HTTP client + runner CLI. See `packages/db/`.
-2. `source_records` + `source_runs` + merge job scaffold once Supabase is wired in (no DB writes yet — runner persists JSON to `staging/` instead).
-3. Validation pass: smoke-test each registry entry, fix selectors / engine choices, flip `validated: true` per brand.
-4. `fda-submissions` adapter — the gate. Without this no formula is allowed to surface to users regardless of how rich its DTC scrape is.
-5. `openfda-recalls` adapter — safety-critical, runs against gated formulas every 15 min.
-6. `openfoodfacts-bulk` — broad fill for ingredient/nutrition gaps.
-7. `usda-fdc` — additional nutrition fill.
-8. `usitc-hts` + manual tariff overlay loader.
-9. Tier D retailer adapters: `amazon-pa-api`, `walmart`, `target-redsky`. Activates the private-label brands (Parent's Choice, Up & Up, Kirkland, etc.) currently parked behind `retailer_api` stubs.
+2. ✅ `fda-submissions` adapter — the gate. Without this no formula is allowed to surface to users regardless of how rich its DTC scrape is. (`packages/db/src/sources/adapters/fda-submissions.ts`, `pnpm fda --submissions-only`)
+3. ✅ `openfda-recalls` adapter — safety-critical, runs against gated formulas every 15 min. (`packages/db/src/sources/adapters/openfda-recalls.ts`, `pnpm fda --recalls-only`)
+4. 🟡 Tier D retailer adapters: `amazon-pa-api` (SigV4-signed), `walmart` (RSA-signed Affiliate API), `target-redsky` (public visitor key). All three implemented; activate by setting their respective env vars. Until then, the runner returns `NO_CREDENTIALS` errors for private-label brands.
+5. 🟡 Validation tooling — `pnpm seed:validate` probes each registry entry's engine + config with one to three live requests, returns pass/fail + hints. Operator runs this to flip `validated: true` per brand.
+6. `source_records` + `source_runs` + merge job scaffold once Supabase is wired in (no DB writes yet — runner persists JSON to `staging/` instead).
+7. `openfoodfacts-bulk` — broad fill for ingredient/nutrition gaps.
+8. `usda-fdc` — additional nutrition fill.
+9. `usitc-hts` + manual tariff overlay loader.
 10. Crowdsource UI + reputation system (PRD § Stock signals).
-11. DTC partnership integrations (Bobbie, ByHeart, Kabrita) — replaces their scraper adapters with first-party APIs once partnerships sign.
+11. DTC partnership API integrations replacing scraper adapters as engagements sign.
