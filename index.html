@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Bottlewise — Design System Preview</title>
+<link rel="icon" href="packages/design-system/assets/logo/bottlewise-mark.svg">
+<link rel="stylesheet" href="packages/design-system/colors_and_type.css">
+<style>
+  body { background: var(--bg); color: var(--fg-1); margin: 0; min-height: 100vh; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 96px; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  header img { width: 36px; height: 36px; }
+  header span { font-family: var(--font-display); font-size: 28px; font-weight: 600; letter-spacing: -0.01em; }
+  h1.lede { font-family: var(--font-display); font-size: clamp(36px, 6vw, 56px); font-weight: 600; line-height: 1.05; letter-spacing: -0.02em; margin: 24px 0 16px; max-width: 18ch; }
+  p.intro { color: var(--fg-2); font-size: 18px; line-height: 1.55; max-width: 60ch; margin: 0 0 48px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sage-deep); margin: 40px 0 12px; }
+  .group { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .card { background: var(--paper); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; text-decoration: none; color: var(--fg-1); transition: border-color 120ms var(--ease-calm), background 120ms var(--ease-calm); display: flex; flex-direction: column; gap: 4px; }
+  .card:hover { border-color: var(--sage); background: var(--sage-soft); }
+  .card .title { font-family: var(--font-body); font-weight: 600; font-size: 15px; }
+  .card .hint { font-size: 13px; color: var(--fg-2); line-height: 1.45; }
+  .card.hero { background: var(--sage); color: var(--paper); border-color: transparent; padding: 24px; }
+  .card.hero:hover { background: var(--sage-deep); }
+  .card.hero .title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .card.hero .hint { color: rgba(251, 247, 238, 0.85); font-size: 14px; }
+  footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; color: var(--fg-2); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  footer a { color: var(--ink); }
+  .pill { display: inline-block; background: var(--sage-soft); color: var(--sage-deep); border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="packages/design-system/assets/logo/bottlewise-mark.svg" alt="">
+    <span>Bottlewise</span>
+    <span class="pill" style="margin-left: 8px;">Design system v1</span>
+  </header>
+
+  <h1 class="lede">The calmest place to make the most stressful decision of new parenthood.</h1>
+  <p class="intro">
+    First-pass visual + content system for the AI formula concierge.
+    Sage primary, oat surfaces, Newsreader display + Hanken Grotesk body, calm-out motion,
+    recall red reserved exclusively for safety. Pre-implementation — react, iterate, swap.
+  </p>
+
+  <div class="eyebrow">Anchor screens</div>
+  <div class="group">
+    <a class="card hero" href="packages/design-system/ui_kits/app/anchor-screens.html">
+      <span class="title">Three mobile anchors + desktop adaptation</span>
+      <span class="hint">Landing, onboarding, recommendations. Production fidelity, 390×844 mobile + 1280 desktop.</span>
+    </a>
+    <a class="card" href="packages/design-system/ui_kits/app/index.html">
+      <span class="title">Interactive flow</span>
+      <span class="hint">Click through Welcome → Intake → Recommendations.</span>
+    </a>
+    <a class="card" href="packages/design-system/explorations/brand-directions.html">
+      <span class="title">Brand explorations</span>
+      <span class="hint">Four directions side-by-side — sage and the alternates we considered.</span>
+    </a>
+  </div>
+
+  <div class="eyebrow">Components</div>
+  <div class="group">
+    <a class="card" href="packages/design-system/preview/components-formula-card.html"><span class="title">Formula card</span><span class="hint">The hero component.</span></a>
+    <a class="card" href="packages/design-system/preview/components-recall-vs-interstitial.html"><span class="title">Recall vs pediatrician interstitial</span><span class="hint">The two safety surfaces, compared.</span></a>
+    <a class="card" href="packages/design-system/preview/components-cost-transparency.html"><span class="title">Cost transparency</span><span class="hint">Per-oz, per-feed, landed (incl. tariff).</span></a>
+    <a class="card" href="packages/design-system/preview/components-badges.html"><span class="title">Badge system</span><span class="hint">Stock, FDA, match, attribute, import.</span></a>
+    <a class="card" href="packages/design-system/preview/components-buttons.html"><span class="title">Buttons</span><span class="hint">Primary, secondary, ghost, destructive.</span></a>
+    <a class="card" href="packages/design-system/preview/components-chips.html"><span class="title">Chips</span><span class="hint">Status, filter, attribute.</span></a>
+    <a class="card" href="packages/design-system/preview/components-inputs.html"><span class="title">Inputs</span><span class="hint">Text, checkbox, toggle, radio card.</span></a>
+    <a class="card" href="packages/design-system/preview/components-safety.html"><span class="title">Safety surfaces</span><span class="hint">Single component, both states.</span></a>
+  </div>
+
+  <div class="eyebrow">Foundations</div>
+  <div class="group">
+    <a class="card" href="packages/design-system/preview/colors-surfaces.html"><span class="title">Colors — surfaces</span><span class="hint">Oat, paper, mist, ink scale.</span></a>
+    <a class="card" href="packages/design-system/preview/colors-sage.html"><span class="title">Colors — sage</span><span class="hint">Primary scale + WCAG pairings.</span></a>
+    <a class="card" href="packages/design-system/preview/colors-accents.html"><span class="title">Colors — accents</span><span class="hint">Clay, honey, info.</span></a>
+    <a class="card" href="packages/design-system/preview/colors-semantic.html"><span class="title">Colors — semantic</span><span class="hint">Success, warning, danger reserved for safety.</span></a>
+    <a class="card" href="packages/design-system/preview/type-display.html"><span class="title">Type — display</span><span class="hint">Newsreader scale.</span></a>
+    <a class="card" href="packages/design-system/preview/type-body.html"><span class="title">Type — body</span><span class="hint">Hanken Grotesk scale.</span></a>
+    <a class="card" href="packages/design-system/preview/type-specialty.html"><span class="title">Type — specialty</span><span class="hint">Eyebrow, numeric, mono.</span></a>
+    <a class="card" href="packages/design-system/preview/spacing-scale.html"><span class="title">Spacing</span><span class="hint">4px base.</span></a>
+    <a class="card" href="packages/design-system/preview/spacing-radii.html"><span class="title">Radii</span><span class="hint">From hairline to capsule.</span></a>
+    <a class="card" href="packages/design-system/preview/spacing-elevation.html"><span class="title">Elevation</span><span class="hint">Three levels, no glow.</span></a>
+    <a class="card" href="packages/design-system/preview/brand-logo.html"><span class="title">Brand mark</span><span class="hint">Wordmark + monogram.</span></a>
+    <a class="card" href="packages/design-system/preview/brand-iconography.html"><span class="title">Iconography</span><span class="hint">Lucide vocabulary, reserved meanings.</span></a>
+  </div>
+
+  <footer>
+    <span>Information &amp; decision-support, not medical advice.</span>
+    <span>
+      <a href="https://github.com/jordychase/bottlewise">jordychase/bottlewise</a>
+      &nbsp;·&nbsp;
+      <a href="packages/design-system/README.md">README</a>
+      &nbsp;·&nbsp;
+      <a href="packages/design-system/BRAND_RATIONALE.md">Brand rationale</a>
+    </span>
+  </footer>
+</div>
+</body>
+</html>
