@@ -217,6 +217,29 @@ export default function FormulaDetailScreen() {
         </View>
       )}
 
+      <View
+        style={{
+          backgroundColor: colors.sageSoft,
+          borderRadius: radii.r4,
+          padding: spacing.s5,
+          gap: spacing.s3,
+        }}
+      >
+        <Eyebrow tone="sage">If this isn't working</Eyebrow>
+        <Text style={{ fontFamily: fonts.body, fontSize: 14, color: colors.ink, lineHeight: 21 }}>
+          Out of stock locally? Cost a concern? Not tolerated? Bottlewise can show the closest matches with the same protein profile.
+        </Text>
+        <Button
+          variant="primary"
+          full
+          onPress={() =>
+            router.push(`/formula/${formula.id}/substitutes?reason=out_of_stock`)
+          }
+        >
+          Find next closest
+        </Button>
+      </View>
+
       <QuantitySuggester formula={formula} ageMonths={DEMO_PROFILE.babyAgeMonths} />
 
       <View style={{ gap: spacing.s3 }}>

@@ -32,7 +32,9 @@ export default function RecallSafetyScreen() {
             // Real impl would use Linking.openURL('tel:...') with a stored
             // pediatrician number. For demo, just acknowledge.
           }}
-          onShowAlternatives={() => router.push("/recommendations")}
+          onShowAlternatives={() =>
+            router.push(`/formula/${formula.id}/substitutes?reason=recalled`)
+          }
         />
       </View>
     </ScreenFrame>
