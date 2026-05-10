@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 import { ScreenFrame } from "@/components/ScreenFrame";
 import { Eyebrow } from "@/components/Eyebrow";
@@ -8,7 +8,7 @@ import { colors, fonts, radii, spacing } from "@/theme/tokens";
 
 const FORMULAS: Formula[] = [
   {
-    id: "bobbie",
+    id: "bobbie-original",
     brand: "Bobbie",
     name: "Original Infant Formula",
     perOz: "1.78",
@@ -21,7 +21,7 @@ const FORMULAS: Formula[] = [
       "Cow milk, organic, no palm oil. Matches the gentle-introduction profile you flagged. The most expensive of your three matches, but the only one without palm oil at this stage.",
   },
   {
-    id: "byheart",
+    id: "byheart-whole-nutrition",
     brand: "ByHeart",
     name: "Whole Nutrition Infant Formula",
     perOz: "1.62",
@@ -34,7 +34,7 @@ const FORMULAS: Formula[] = [
       "Same protein source as Bobbie with broader stock and a slightly cheaper per-ounce price. A2-only protein may be gentler on digestion.",
   },
   {
-    id: "kendamil",
+    id: "kendamil-classic-stage-1",
     brand: "Kendamil",
     name: "Organic First Infant Milk",
     perOz: "1.94",
@@ -95,9 +95,9 @@ export default function RecommendationsScreen() {
         )}
       </View>
 
-      <FormulaCard formula={FORMULAS[0]} eyebrow="Best match" />
-      <FormulaCard formula={FORMULAS[1]} eyebrow="Close runner-up" />
-      <FormulaCard formula={FORMULAS[2]} eyebrow="Worth knowing" />
+      <FormulaCard formula={FORMULAS[0]} eyebrow="Best match" onPress={() => router.push(`/formula/bobbie-original`)} />
+      <FormulaCard formula={FORMULAS[1]} eyebrow="Close runner-up" onPress={() => router.push(`/formula/byheart-whole-nutrition`)} />
+      <FormulaCard formula={FORMULAS[2]} eyebrow="Worth knowing" onPress={() => router.push(`/formula/kendamil-classic-stage-1`)} />
 
       <View style={{ marginTop: spacing.s2, gap: spacing.s2 }}>
         <Eyebrow tone="clay">Avoid for now</Eyebrow>

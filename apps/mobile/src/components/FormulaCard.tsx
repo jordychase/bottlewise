@@ -1,6 +1,9 @@
 import { Pressable, Text, View } from "react-native";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
 import { Chip } from "./Chip";
+import { IngredientScoreInlineBadge } from "./IngredientScoreBadge";
+import { scoreSummary } from "@/lib/ingredient-score";
+import { findFormulaById } from "@/data/formula-catalog";
 
 export type StockStatus = "in_stock" | "low" | "oos" | "unknown";
 
@@ -50,6 +53,10 @@ function StockBadge({ status, ago }: { status: StockStatus; ago?: string }) {
 }
 
 export function FormulaCard({ formula, eyebrow, onPress, compact }: FormulaCardProps) {
+  const catalogEntry = findFormulaById(formula.id);
+  const score = catalogEntry
+    ? scoreSummary(catalogEntry.ingredients, catalogEntry.attributes)
+    : null;
   const Wrapper: any = onPress ? Pressable : View;
   return (
     <Wrapper
@@ -115,6 +122,7 @@ export function FormulaCard({ formula, eyebrow, onPress, compact }: FormulaCardP
       )}
 
       <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap", marginTop: spacing.s3 }}>
+        {score && <IngredientScoreInlineBadge grade={score.grade} />}
         <StockBadge status={formula.stock} ago={formula.stockAgo} />
         {formula.origin === "european" && <Chip tone="honey">European import</Chip>}
         {formula.tags?.map((t) => (

@@ -39,6 +39,14 @@ export interface FormulaProduct {
   segments: FormulaSegment[];
   searchTags: string[];
   tinAccent: string;
+  /** Full ingredient list as printed on the tin, in order. Only present
+   *  for formulas we've manually transcribed; absent = "scrape pending"
+   *  on the detail page. Each string is one ingredient. */
+  ingredients?: string[];
+  /** Positive attributes (organic, a2, hmo, mfgm, lactoferrin, no palm
+   *  oil) sourced from product metadata rather than the ingredient list
+   *  itself. The ingredient-score engine combines both. */
+  attributes?: string[];
 }
 
 const A = colors.sageSoft;
@@ -60,6 +68,21 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["mass_market"],
     searchTags: ["enfamil", "neuropro", "neuro pro", "blue can", "yellow lid", "regular enfamil"],
     tinAccent: E,
+    ingredients: [
+      "Nonfat milk",
+      "Lactose",
+      "Vegetable oils (palm olein, coconut, soy, high-oleic sunflower oils)",
+      "Whey protein concentrate (a source of milk fat globule membrane / MFGM)",
+      "Galactooligosaccharides (GOS)",
+      "Calcium carbonate",
+      "Polydextrose",
+      "DHA (single cell oil)",
+      "ARA (single cell oil)",
+      "Choline chloride",
+      "Taurine",
+      "Mixed tocopherols",
+    ],
+    attributes: ["lactose primary", "mfgm"],
   },
   {
     id: "enfamil-gentlease",
@@ -120,6 +143,22 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["mass_market"],
     searchTags: ["similac", "pro advance", "pro-advance", "orange tub", "blue lid", "regular similac"],
     tinAccent: C,
+    ingredients: [
+      "Nonfat milk",
+      "Lactose",
+      "Whey protein concentrate",
+      "Vegetable oils (high-oleic safflower, soy, coconut oils)",
+      "Galactooligosaccharides (GOS)",
+      "2'-Fucosyllactose (2'-FL HMO)",
+      "Calcium carbonate",
+      "DHA (from algal oil)",
+      "ARA (from fungal oil)",
+      "Lutein",
+      "Choline bitartrate",
+      "Taurine",
+      "Mixed tocopherols",
+    ],
+    attributes: ["lactose primary", "hmo", "no palm oil"],
   },
   {
     id: "similac-pro-sensitive",
@@ -254,6 +293,21 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["private_label"],
     searchTags: ["parent's choice", "parents choice", "walmart", "wic", "store brand"],
     tinAccent: B,
+    ingredients: [
+      "Nonfat milk",
+      "Lactose",
+      "Vegetable oils (palm olein, soy, coconut, high-oleic sunflower oils)",
+      "Whey protein concentrate",
+      "Galactooligosaccharides (GOS)",
+      "Calcium phosphate",
+      "DHA (single cell oil)",
+      "ARA (single cell oil)",
+      "Soy lecithin",
+      "Choline chloride",
+      "Taurine",
+      "Mixed tocopherols",
+    ],
+    attributes: ["lactose primary"],
   },
   {
     id: "parents-choice-sensitivity",
@@ -388,6 +442,21 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["premium_dtc"],
     searchTags: ["bobbie", "organic", "no palm oil", "european style"],
     tinAccent: B,
+    ingredients: [
+      "Organic reduced minerals whey",
+      "Organic lactose",
+      "Organic nonfat milk",
+      "Organic vegetable oils (organic sunflower oil, organic soy oil, organic coconut oil)",
+      "Organic galactooligosaccharides (GOS)",
+      "Calcium carbonate",
+      "DHA (from algal oil)",
+      "ARA (from fungal oil)",
+      "Choline bitartrate",
+      "Taurine",
+      "L-tryptophan",
+      "Mixed tocopherols",
+    ],
+    attributes: ["organic", "lactose primary", "no palm oil"],
   },
   {
     id: "bobbie-organic-gentle",
@@ -412,6 +481,21 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["premium_dtc", "a2_milk"],
     searchTags: ["byheart", "by heart", "whole milk", "lactoferrin", "a2"],
     tinAccent: D,
+    ingredients: [
+      "Lactose",
+      "Organic whole milk (A2-only)",
+      "Organic high-oleic sunflower oil",
+      "Organic coconut oil",
+      "Organic soy oil",
+      "Whey protein concentrate",
+      "Lactoferrin",
+      "DHA (from algal oil)",
+      "ARA (from fungal oil)",
+      "Calcium phosphate",
+      "Choline bitartrate",
+      "Mixed tocopherols",
+    ],
+    attributes: ["a2", "whole milk", "lactoferrin", "lactose primary", "no palm oil"],
   },
   {
     id: "serenity-kids-toddler",
@@ -570,6 +654,20 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["european_import"],
     searchTags: ["kendamil", "uk", "europe", "whole milk", "stage 1"],
     tinAccent: A,
+    ingredients: [
+      "Whole milk",
+      "Lactose (from milk)",
+      "Whey protein concentrate",
+      "Vegetable oils (sunflower, rapeseed, coconut)",
+      "Galactooligosaccharides (GOS)",
+      "Calcium phosphate",
+      "DHA (Schizochytrium algal oil)",
+      "ARA (Mortierella alpina oil)",
+      "Choline",
+      "Taurine",
+      "Mixed tocopherols",
+    ],
+    attributes: ["whole milk", "lactose primary", "no palm oil"],
   },
   {
     id: "kendamil-organic-stage-1",
@@ -632,6 +730,20 @@ export const FORMULA_CATALOG: FormulaProduct[] = [
     segments: ["specialty_hypoallergenic"],
     searchTags: ["nutramigen", "hypoallergenic", "cmpa", "cow milk protein allergy", "yellow can"],
     tinAccent: D,
+    ingredients: [
+      "Corn syrup solids",
+      "Vegetable oils (palm olein, soy, coconut, high-oleic sunflower oils)",
+      "Casein hydrolysate (extensively hydrolyzed)",
+      "Modified corn starch",
+      "Lactobacillus rhamnosus GG (LGG)",
+      "Calcium phosphate",
+      "DHA (single cell oil)",
+      "ARA (single cell oil)",
+      "Choline chloride",
+      "Taurine",
+      "L-cystine",
+    ],
+    attributes: ["extensively hydrolyzed"],
   },
   {
     id: "alimentum",
