@@ -6,7 +6,9 @@ This file layers on top of the global `~/.claude/CLAUDE.md`. The global rules (1
 
 ## Project context (read first)
 
-Read in this order before any non-trivial change:
+**New to this repo? Start with `docs/HANDOFF.md`.** It's a single-page status map: what's working end-to-end, what's blocked on an operator, the suggested first pickup, and the known gotchas (pnpm/npm split, RN Pressable + synthetic events, demo profile defaults). It's deliberately kept short so a Claude Code session orients in one read.
+
+Then, in order before any non-trivial change:
 
 1. `README.md` — project overview and stack
 2. `docs/PRD.md` — product specification, scope, compliance framework
