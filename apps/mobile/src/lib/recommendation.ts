@@ -428,9 +428,15 @@ function buildSummary(
     .sort((a, b) => b.weight - a.weight)
     .slice(0, 3);
   if (top.length === 0) {
-    return `${formula.brandName} ${formula.productName.toLowerCase()} is in range for ${babyNameFirst}.`;
+    return `${formula.fullName} is in range for ${babyNameFirst}.`;
   }
-  const labels = top.map((r) => r.label.toLowerCase());
+  // Lowercase only the first letter so acronyms like CMPA / DHA / AAP
+  // stay intact when joined into the sentence.
+  const labels = top.map((r) =>
+    r.label.length > 0
+      ? r.label[0]!.toLowerCase() + r.label.slice(1)
+      : r.label,
+  );
   if (labels.length === 1) {
     return `Picked because: ${labels[0]}.`;
   }
