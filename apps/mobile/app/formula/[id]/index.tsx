@@ -13,22 +13,15 @@ import { findFormulaById } from "@/data/formula-catalog";
 import { scoreFormula } from "@/lib/ingredient-score";
 import { narrate, type NarrationOutput } from "@/lib/narrator";
 import { aggregateForFormula, getDisplayedExperiencesForFormula } from "@/lib/community";
+import { findCalibration } from "@/data/calibration";
+import { CalibrationCard } from "@/components/CalibrationCard";
+import { useBabyProfile } from "@/state/baby-profile";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
-
-// Demo profile for the personalized notes layer. Until we wire the
-// real onboarding state, this stub demonstrates the surface.
-const DEMO_PROFILE = {
-  babyNameFirst: "Maya",
-  babyAgeMonths: 3,
-  familySoyAllergy: false,
-  familyEczema: true,
-  familyCmpa: false,
-  preemie: false,
-};
 
 export default function FormulaDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const formula = id ? findFormulaById(id) : undefined;
+  const { profile } = useBabyProfile();
 
   const [narration, setNarration] = useState<NarrationOutput | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,14 +34,14 @@ export default function FormulaDetailScreen() {
       ? scoreFormula({
           ingredients: formula.ingredients!,
           attributes: formula.attributes ?? [],
-          babyProfile: DEMO_PROFILE,
+          babyProfile: profile,
         })
       : null;
 
   useEffect(() => {
     if (!formula || !breakdown) return;
     let cancelled = false;
-    narrate({ breakdown, formula, profile: DEMO_PROFILE }).then((out) => {
+    narrate({ breakdown, formula, profile: profile }).then((out) => {
       if (!cancelled) setNarration(out);
     });
     return () => {
@@ -160,7 +153,7 @@ export default function FormulaDetailScreen() {
                 textTransform: "uppercase",
               }}
             >
-              A note for {DEMO_PROFILE.babyNameFirst}
+              A note for {profile.babyNameFirst}
             </Text>
             <Chip tone={narration.source === "claude" ? "sage" : "neutral"}>
               {narration.source === "claude" ? "Personalized" : "Templated"}
@@ -240,12 +233,18 @@ export default function FormulaDetailScreen() {
         </Button>
       </View>
 
-      <QuantitySuggester formula={formula} ageMonths={DEMO_PROFILE.babyAgeMonths} />
+      <CalibrationCard
+        prepMethod={profile.prepMethod}
+        entry={findCalibration(formula.id, profile.prepMethod)}
+        noEntry={!findCalibration(formula.id, profile.prepMethod) && profile.prepMethod !== "hand"}
+      />
+
+      <QuantitySuggester formula={formula} ageMonths={profile.babyAgeMonths} />
 
       <View style={{ gap: spacing.s3 }}>
         <CommunityExperiences experiences={experiences} aggregate={aggregate} />
         <Button variant="secondary" full onPress={() => setModalOpen(true)}>
-          Share what happened for {DEMO_PROFILE.babyNameFirst}
+          Share what happened for {profile.babyNameFirst}
         </Button>
       </View>
 

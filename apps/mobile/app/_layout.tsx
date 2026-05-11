@@ -14,6 +14,7 @@ import {
 } from "@expo-google-fonts/hanken-grotesk";
 import { View, Text } from "react-native";
 import { colors } from "@/theme/tokens";
+import { BabyProfileProvider } from "@/state/baby-profile";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -34,15 +35,17 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <StatusBar style="dark" />
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.oat },
-          animation: "fade",
-        }}
-      />
-    </SafeAreaProvider>
+    <BabyProfileProvider>
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.oat },
+            animation: "fade",
+          }}
+        />
+      </SafeAreaProvider>
+    </BabyProfileProvider>
   );
 }

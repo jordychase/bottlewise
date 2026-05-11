@@ -1,22 +1,22 @@
 import { router } from "expo-router";
-import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { ScreenFrame } from "@/components/ScreenFrame";
 import { Button } from "@/components/Button";
 import { Eyebrow } from "@/components/Eyebrow";
+import { useBabyProfile, type PrepMethod } from "@/state/baby-profile";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
 
-const ISSUES = [
+const ISSUES: Array<{ id: string; label: string; exclusive?: boolean }> = [
   { id: "gas", label: "Gas" },
   { id: "reflux", label: "Reflux / spit-up" },
   { id: "fussy", label: "Fussy after feeds" },
   { id: "stools", label: "Hard or infrequent stools" },
   { id: "eczema", label: "Eczema or skin issue" },
-  { id: "allergic", label: "Allergic reaction", safety: true },
+  { id: "allergic", label: "Allergic reaction" },
   { id: "none", label: "None of the above", exclusive: true },
 ];
 
-const PREP_METHODS = [
+const PREP_METHODS: Array<{ id: PrepMethod; label: string; hint: string }> = [
   { id: "hand", label: "Hand-measure with the scoop", hint: "The included scoop, mixed manually." },
   { id: "baby_brezza", label: "Baby Brezza Formula Pro", hint: "We'll show the calibrated setting for each formula." },
   { id: "tommee_tippee", label: "Tommee Tippee Perfect Prep", hint: "Calibration per formula where available." },
@@ -25,23 +25,26 @@ const PREP_METHODS = [
 ];
 
 export default function IntakeScreen() {
-  const [selected, setSelected] = useState<Set<string>>(new Set(["reflux", "fussy"]));
-  const [prep, setPrep] = useState<string>("hand");
+  const { profile, update } = useBabyProfile();
+  const selected = new Set(profile.issuesObserved);
+  const prep = profile.prepMethod;
+  const name = profile.babyNameFirst;
 
   const toggle = (id: string, exclusive?: boolean) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (exclusive) return new Set(next.has(id) ? [] : [id]);
-      next.delete("none");
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+    const next = new Set(selected);
+    if (exclusive) {
+      update({ issuesObserved: next.has(id) ? [] : [id] });
+      return;
+    }
+    next.delete("none");
+    next.has(id) ? next.delete(id) : next.add(id);
+    update({ issuesObserved: Array.from(next) });
   };
 
   return (
     <ScreenFrame disclaimer>
       <View style={{ paddingTop: spacing.s5, gap: spacing.s2 }}>
-        <Eyebrow>About Maya · Step 2 of 4</Eyebrow>
+        <Eyebrow>About {name} · Step 2 of 4</Eyebrow>
         <Text
           style={{
             fontFamily: fonts.display,
@@ -52,7 +55,7 @@ export default function IntakeScreen() {
             marginTop: spacing.s1,
           }}
         >
-          What's Maya dealing with right now?
+          What's {name} dealing with right now?
         </Text>
         <Text
           style={{
@@ -74,7 +77,7 @@ export default function IntakeScreen() {
           return (
             <Pressable
               key={method.id}
-              onPress={() => setPrep(method.id)}
+              onPress={() => update({ prepMethod: method.id })}
               style={{
                 backgroundColor: colors.paper,
                 borderColor: active ? colors.sage : colors.mist,
@@ -115,7 +118,7 @@ export default function IntakeScreen() {
       </View>
 
       <View style={{ gap: spacing.s2, marginTop: spacing.s4 }}>
-        <Eyebrow>What's Maya dealing with?</Eyebrow>
+        <Eyebrow>What's {name} dealing with?</Eyebrow>
         {ISSUES.map((issue) => {
           const isSelected = selected.has(issue.id);
           return (
