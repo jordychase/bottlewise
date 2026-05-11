@@ -15,6 +15,7 @@ import {
 import { View, Text } from "react-native";
 import { colors } from "@/theme/tokens";
 import { BabyProfileProvider } from "@/state/baby-profile";
+import { StockProvider } from "@/state/stock";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -36,16 +37,18 @@ export default function RootLayout() {
 
   return (
     <BabyProfileProvider>
-      <SafeAreaProvider>
-        <StatusBar style="dark" />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: colors.oat },
-            animation: "fade",
-          }}
-        />
-      </SafeAreaProvider>
+      <StockProvider>
+        <SafeAreaProvider>
+          <StatusBar style="dark" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: colors.oat },
+              animation: "fade",
+            }}
+          />
+        </SafeAreaProvider>
+      </StockProvider>
     </BabyProfileProvider>
   );
 }

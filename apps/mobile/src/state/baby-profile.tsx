@@ -31,6 +31,8 @@ export type PrepMethod =
   | "dr_browns"
   | "other";
 
+export type SwitchReason = "stock" | "recall" | "tolerance" | "cost" | "preference";
+
 export interface BabyProfile {
   babyNameFirst: string;
   babyAgeMonths: number;
@@ -41,6 +43,17 @@ export interface BabyProfile {
   preemie: boolean;
   prepMethod: PrepMethod;
   issuesObserved: string[];
+  /** The formula actively being used right now. */
+  currentFormulaId?: string;
+  /** The formula being temporarily substituted (parent wants to switch
+   *  back if it returns / problem resolves). */
+  previousFormulaId?: string;
+  /** When and why the parent switched. */
+  switchedAt?: string;
+  switchedDueTo?: SwitchReason;
+  /** When true, Bottlewise watches stock_signals for previousFormulaId
+   *  and surfaces a RestockBanner the moment it returns. */
+  watchForRestock?: boolean;
 }
 
 const DEFAULT_PROFILE: BabyProfile = {
@@ -52,6 +65,9 @@ const DEFAULT_PROFILE: BabyProfile = {
   preemie: false,
   prepMethod: "hand",
   issuesObserved: ["reflux", "fussy"],
+  // Demo state: Maya is on Bobbie Original by default so the
+  // current-formula + restock surfaces work out of the box.
+  currentFormulaId: "bobbie-original",
 };
 
 const STORAGE_KEY = "bottlewise.baby-profile.v1";

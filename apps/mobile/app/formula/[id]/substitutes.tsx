@@ -6,7 +6,8 @@ import { Eyebrow } from "@/components/Eyebrow";
 import { Chip } from "@/components/Chip";
 import { Button } from "@/components/Button";
 import { IngredientScoreInlineBadge } from "@/components/IngredientScoreBadge";
-import { findFormulaById } from "@/data/formula-catalog";
+import { SwitchSubstituteModal, type SwitchChoice } from "@/components/SwitchSubstituteModal";
+import { findFormulaById, type FormulaProduct } from "@/data/formula-catalog";
 import { scoreSummary } from "@/lib/ingredient-score";
 import {
   findSubstitutes,
@@ -14,7 +15,17 @@ import {
   type SimilarityMatch,
   type SubstitutionReason,
 } from "@/lib/similarity";
+import { useBabyProfile, type SwitchReason } from "@/state/baby-profile";
+import { useStock } from "@/state/stock";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
+
+function reasonToSwitchReason(r: SubstitutionReason): SwitchReason {
+  if (r === "out_of_stock") return "stock";
+  if (r === "recalled") return "recall";
+  if (r === "too_expensive") return "cost";
+  if (r === "not_tolerated") return "tolerance";
+  return "preference";
+}
 
 const REASON_TABS: { id: SubstitutionReason; label: string }[] = [
   { id: "out_of_stock", label: "If it's unavailable" },
@@ -42,11 +53,34 @@ export default function SubstitutesScreen() {
       ? (reasonParam as SubstitutionReason)
       : "out_of_stock";
   const [reason, setReason] = useState<SubstitutionReason>(initialReason);
+  const [pendingMatch, setPendingMatch] = useState<FormulaProduct | null>(null);
+  const { profile, update } = useBabyProfile();
+  const stock = useStock();
 
   const matches = useMemo(
     () => (baseline ? findSubstitutes(baseline, { reason, limit: 3 }) : []),
     [baseline?.id, reason],
   );
+
+  const confirmSwitch = (choice: SwitchChoice) => {
+    if (!pendingMatch || !baseline) return;
+    if (choice.makeCurrent) {
+      update({
+        currentFormulaId: pendingMatch.id,
+        previousFormulaId: choice.permanent ? undefined : baseline.id,
+        switchedAt: new Date().toISOString(),
+        switchedDueTo: reasonToSwitchReason(reason),
+        watchForRestock: choice.watchForRestock,
+      });
+      // For demo: when watching for restock due to OOS, flip the
+      // baseline's stock state so the panel reflects the situation.
+      if (choice.watchForRestock && reason === "out_of_stock") {
+        stock.setStatus(baseline.id, "oos");
+      }
+    }
+    setPendingMatch(null);
+    router.push(`/formula/${pendingMatch.id}`);
+  };
 
   if (!baseline) {
     return (
@@ -188,7 +222,12 @@ export default function SubstitutesScreen() {
       ) : (
         <View style={{ gap: spacing.s3 }}>
           {matches.map((match, idx) => (
-            <MatchCard key={match.formula.id} match={match} rank={idx + 1} />
+            <MatchCard
+              key={match.formula.id}
+              match={match}
+              rank={idx + 1}
+              onChoose={() => setPendingMatch(match.formula)}
+            />
           ))}
         </View>
       )}
@@ -198,15 +237,35 @@ export default function SubstitutesScreen() {
         suggestions automatically. Always talk to your pediatrician before
         switching, especially for hypoallergenic or amino-acid formulas.
       </Text>
+
+      {pendingMatch && (
+        <SwitchSubstituteModal
+          visible
+          baseline={baseline}
+          substitute={pendingMatch}
+          babyNameFirst={profile.babyNameFirst}
+          reason={reason}
+          onChoose={confirmSwitch}
+          onCancel={() => setPendingMatch(null)}
+        />
+      )}
     </ScreenFrame>
   );
 }
 
-function MatchCard({ match, rank }: { match: SimilarityMatch; rank: number }) {
+function MatchCard({
+  match,
+  rank,
+  onChoose,
+}: {
+  match: SimilarityMatch;
+  rank: number;
+  onChoose: () => void;
+}) {
   const score = scoreSummary(match.formula.ingredients, match.formula.attributes);
   return (
     <Pressable
-      onPress={() => router.push(`/formula/${match.formula.id}`)}
+      onPress={onChoose}
       style={{
         backgroundColor: colors.paper,
         borderColor: colors.mist,
