@@ -54,6 +54,10 @@ export interface BabyProfile {
   /** When true, Bottlewise watches stock_signals for previousFormulaId
    *  and surfaces a RestockBanner the moment it returns. */
   watchForRestock?: boolean;
+  /** Set when the parent accepts the first-launch disclosure modal.
+   *  Persisted alongside the profile so the modal never reappears for
+   *  this user. */
+  hasAcceptedDisclosure?: boolean;
 }
 
 const DEFAULT_PROFILE: BabyProfile = {
@@ -101,6 +105,10 @@ interface BabyProfileContextValue {
   profile: BabyProfile;
   update: (patch: Partial<BabyProfile>) => void;
   reset: () => void;
+  /** Wipe everything Bottlewise has stored on this device — profile,
+   *  community experiences, reports, stock state, AND the saved
+   *  disclosure-acceptance flag. Used by Settings → Delete my account. */
+  deleteAllLocalData: () => void;
 }
 
 const BabyProfileContext = createContext<BabyProfileContextValue | null>(null);
@@ -122,7 +130,38 @@ export function BabyProfileProvider({ children }: { children: React.ReactNode })
     setProfile(DEFAULT_PROFILE);
   }, []);
 
-  const value = useMemo(() => ({ profile, update, reset }), [profile, update, reset]);
+  const deleteAllLocalData = useCallback(() => {
+    if (typeof globalThis !== "undefined") {
+      const storage = (globalThis as { localStorage?: Storage }).localStorage;
+      if (storage) {
+        // Wipe every Bottlewise key. Anything new should follow the
+        // `bottlewise.` prefix convention so this remains exhaustive.
+        const keys: string[] = [];
+        for (let i = 0; i < storage.length; i++) {
+          const k = storage.key(i);
+          if (k && k.startsWith("bottlewise.")) keys.push(k);
+        }
+        for (const k of keys) storage.removeItem(k);
+      }
+    }
+    // Reset in-memory profile to a truly empty state — no defaults.
+    setProfile({
+      babyNameFirst: "",
+      babyAgeMonths: 0,
+      familySoyAllergy: false,
+      familyEczema: false,
+      familyCmpa: false,
+      preemie: false,
+      prepMethod: "hand",
+      issuesObserved: [],
+      hasAcceptedDisclosure: false,
+    });
+  }, []);
+
+  const value = useMemo(
+    () => ({ profile, update, reset, deleteAllLocalData }),
+    [profile, update, reset, deleteAllLocalData],
+  );
 
   return (
     <BabyProfileContext.Provider value={value}>

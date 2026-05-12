@@ -1,6 +1,9 @@
-import { Text, View } from "react-native";
+import { useState } from "react";
+import { Pressable, Text, View } from "react-native";
 import { colors, fonts, radii, spacing } from "@/theme/tokens";
 import { Chip } from "./Chip";
+import { ReportExperienceModal } from "./ReportExperienceModal";
+import { isHiddenLocally } from "@/lib/reports";
 import type { AggregateOutcome, CommunityExperience } from "@/lib/community";
 
 interface Props {
@@ -32,6 +35,13 @@ const TOLERANCE_TONE = {
 } as const;
 
 export function CommunityExperiences({ experiences, aggregate }: Props) {
+  const [reportTarget, setReportTarget] = useState<string | null>(null);
+  const [reportedVersion, setReportedVersion] = useState(0);
+  // Hide experiences the user has flagged locally — checked at render time
+  // so a newly-reported experience disappears immediately.
+  const visible = experiences.filter((e) => !isHiddenLocally(e.id));
+  void reportedVersion;
+
   return (
     <View style={{ gap: spacing.s3 }}>
       <Text
@@ -74,12 +84,12 @@ export function CommunityExperiences({ experiences, aggregate }: Props) {
         </View>
       )}
 
-      {experiences.length === 0 ? (
+      {visible.length === 0 ? (
         <Text style={{ fontFamily: fonts.body, fontSize: 13, color: colors.ink2, lineHeight: 19 }}>
           No experiences yet. Be the first to share.
         </Text>
       ) : (
-        experiences.map((e) => {
+        visible.map((e) => {
           const isMine = e.id.startsWith("local-");
           return (
             <View
@@ -124,9 +134,28 @@ export function CommunityExperiences({ experiences, aggregate }: Props) {
                   ))}
                 </View>
               )}
+              {!isMine && (
+                <Pressable
+                  onPress={() => setReportTarget(e.id)}
+                  style={{ alignSelf: "flex-end", paddingVertical: 4 }}
+                >
+                  <Text style={{ fontFamily: fonts.bodySemi, fontSize: 11, color: colors.ink3, textDecorationLine: "underline" }}>
+                    Report
+                  </Text>
+                </Pressable>
+              )}
             </View>
           );
         })
+      )}
+
+      {reportTarget && (
+        <ReportExperienceModal
+          visible
+          experienceId={reportTarget}
+          onClose={() => setReportTarget(null)}
+          onReported={() => setReportedVersion((v) => v + 1)}
+        />
       )}
     </View>
   );

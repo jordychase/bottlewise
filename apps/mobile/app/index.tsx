@@ -7,6 +7,7 @@ import { RadioCard } from "@/components/RadioCard";
 import { Wordmark } from "@/components/Wordmark";
 import { CurrentFormulaPanel } from "@/components/CurrentFormulaPanel";
 import { RestockBanner } from "@/components/RestockBanner";
+import { FirstLaunchDisclosure } from "@/components/FirstLaunchDisclosure";
 import { findFormulaById } from "@/data/formula-catalog";
 import { useBabyProfile } from "@/state/baby-profile";
 import { statusOf, useStock } from "@/state/stock";
@@ -172,7 +173,31 @@ export default function WelcomeScreen() {
         >
           Information &amp; decision-support, not medical advice.
         </Text>
+        <View style={{ flexDirection: "row", gap: spacing.s3, marginTop: spacing.s2 }}>
+          <Pressable onPress={() => router.push("/legal/privacy" as never)}>
+            <Text style={{ fontFamily: fonts.bodySemi, fontSize: 11, color: colors.ink3, textDecorationLine: "underline" }}>
+              Privacy
+            </Text>
+          </Pressable>
+          <Text style={{ fontFamily: fonts.body, fontSize: 11, color: colors.ink3 }}>·</Text>
+          <Pressable onPress={() => router.push("/legal/terms" as never)}>
+            <Text style={{ fontFamily: fonts.bodySemi, fontSize: 11, color: colors.ink3, textDecorationLine: "underline" }}>
+              Terms
+            </Text>
+          </Pressable>
+          <Text style={{ fontFamily: fonts.body, fontSize: 11, color: colors.ink3 }}>·</Text>
+          <Pressable onPress={() => router.push("/settings" as never)}>
+            <Text style={{ fontFamily: fonts.bodySemi, fontSize: 11, color: colors.ink3, textDecorationLine: "underline" }}>
+              Settings
+            </Text>
+          </Pressable>
+        </View>
       </View>
+
+      <FirstLaunchDisclosure
+        visible={!profile.hasAcceptedDisclosure}
+        onAccept={() => update({ hasAcceptedDisclosure: true })}
+      />
     </ScreenFrame>
   );
 }
