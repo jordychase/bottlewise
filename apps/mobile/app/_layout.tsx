@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
@@ -16,6 +16,24 @@ import { View, Text } from "react-native";
 import { colors } from "@/theme/tokens";
 import { BabyProfileProvider } from "@/state/baby-profile";
 import { StockProvider } from "@/state/stock";
+import { FeedbackButton } from "@/components/FeedbackButton";
+
+function RootLayoutInner() {
+  const pathname = usePathname();
+  return (
+    <SafeAreaProvider>
+      <StatusBar style="dark" />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: colors.oat },
+          animation: "fade",
+        }}
+      />
+      <FeedbackButton currentRoute={pathname || "/"} />
+    </SafeAreaProvider>
+  );
+}
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -38,16 +56,7 @@ export default function RootLayout() {
   return (
     <BabyProfileProvider>
       <StockProvider>
-        <SafeAreaProvider>
-          <StatusBar style="dark" />
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: colors.oat },
-              animation: "fade",
-            }}
-          />
-        </SafeAreaProvider>
+        <RootLayoutInner />
       </StockProvider>
     </BabyProfileProvider>
   );
